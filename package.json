@@ -1,0 +1,32 @@
+{
+  "name": "steemkr",
+  "version": "0.0.1",
+  "description": "A CLI for steemit that gives you steemit information",
+  "main": "index.js",
+  "homepage": "https://steemit.com/@wonsama",
+  "scripts": {},
+  "bin": {
+    "steemkr": "bin/steemkr"
+  },
+  "repository": {
+    "type":"git",
+    "url":"git+https://github.com/wonsama/steemkr.git"
+  },
+  "engines":{
+    "node":">=8"
+  },
+  "keywords": [
+    "steem",
+    "steemit",
+    "steemkr"
+  ],
+  "preferGlobal":true,
+  "author": "wonsama",
+  "license": "MIT",
+  "dependencies": {
+    "dateformat": "^3.0.3",
+    "minimist": "^1.2.0",
+    "ora": "^2.1.0",
+    "steem": "^0.7.1"
+  }
+}
