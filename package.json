@@ -1,6 +1,6 @@
 {
   "name": "steemkr",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "A CLI for steemit that gives you steemit information",
   "main": "index.js",
   "homepage": "https://steemit.com/@wonsama",
