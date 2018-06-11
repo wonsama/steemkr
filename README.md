@@ -2,6 +2,10 @@
 스팀잇 용 CLI (커맨드라인 툴)
 
 ![ss_accounts.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_accounts.png)
+<center>[그림 : 계정 정보 확인]</center>
+
+![ss_price.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_price.png)
+<center>[그림 : UPBIT기준 가격 확인]</center>
 
 # 사전작업
 
@@ -31,10 +35,10 @@ STEEM_KEY_POSTING : 포스팅키
 > STEEM_AUTHOR, STEEM_KEY_POSTING 키 입력시 steemkr accounts 만 해도 계정 정보 확인 및 보상이 있을 경우 자동으로 보상을 청구함.
 > (물론 찝찝하면 안쓰면되요 ^^ )
 
-#### new 
+#### 신규
 * 일일 가격변동 확인 : `$ steemkr price <코인타입>`
 
-#### old
+#### 기존
 * 계정 정보 확인 : `$ steemkr accounts <계정명>`
 * 도움말 : `$ steemkr help`
 * 버전 : `$ steemkr version`
