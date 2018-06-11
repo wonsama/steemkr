@@ -5,8 +5,13 @@ const ora = require('ora');
 
 const LIB_FILE_NAME = 'accounts.js';
 
+// 기본값
+const DEF_AUTHOR = process.env.STEEM_AUTHOR;
+const DEF_POSTING = process.env.STEEM_KEY_POSTING;
+
 let total_vesting_shares;
 let total_vesting_fund_steem;
+let spinner;
 
 // 시간을 연산한다 
 // h : 시간 
@@ -69,8 +74,8 @@ function analysis(result){
   delegated_vesting_shares = steem.formatter.vestToSteem(delegated_vesting_shares, total_vesting_shares, total_vesting_fund_steem);
   delegated_vesting_shares = Math.round(delegated_vesting_shares);  
 
-  // let reward_sp = steem.formatter.vestToSteem(getMoney(result.reward_vesting_balance), total_vesting_shares, total_vesting_fund_steem);
-  // reward_sp = reward_sp.toPrecision(4);
+  let reward_sp = steem.formatter.vestToSteem(getMoney(result.reward_vesting_balance), total_vesting_shares, total_vesting_fund_steem);
+  reward_sp = reward_sp.toPrecision(4);
 
 	return [
 		{
@@ -113,25 +118,57 @@ function analysis(result){
 			values : [
 				{val : getMoney(result.reward_sbd_balance), en : 'reward_sbd_balance', kr : '스달', subfix:'SBD'},
 				{val : getMoney(result.reward_steem_balance), en : 'reward_steem_balance', kr : '스팀', subfix:'STEEM'},
-				{val : getMoney(result.reward_vesting_steem), en : 'reward_vesting_steem', kr : '스파', subfix:'SP'},
-				// {val : reward_sp, en : 'reward_vesting_balance', kr : '스파', subfix:'SP'}
+				{val : getMoney(result.reward_vesting_balance), en : 'reward_vesting_balance', kr : '베스트', subfix:'VEST'},
+				{val : reward_sp, en : 'reward_vesting_balance', kr : '스파', subfix:'SP'}
 			]
 		}
 	];	
 }
 
+// 보상을 요청한다
+// results : 결과 
+// author : 계정명
+// posting : POSTING KEY
+function claimRewards(results, author, posting){
+
+	// 요청 정보가 본인이며 기본 설정값이 존재하는지 확인 
+	if(results.length==1 && results[0].name==author && posting!=undefined){
+
+		let reward_steem_balance = results[0].reward_steem_balance;
+    let reward_sbd_balance = results[0].reward_sbd_balance;
+    let reward_vesting_balance = results[0].reward_vesting_balance;
+
+		let r1 = Number(reward_steem_balance.split(" ")[0]);
+    let r2 = Number(reward_sbd_balance.split(" ")[0]);
+    let r3 = Number(reward_vesting_balance.split(" ")[0]);
+
+    if (r1 == 0 && r2 == 0 && r3 == 0) {
+			return Promise.resolve(`${author} no claim`);
+    }else{
+    	spinner.start('claim reward');
+    	return steem.broadcast.claimRewardBalanceAsync(posting, author, reward_steem_balance, reward_sbd_balance, reward_vesting_balance);
+    }
+	}
+	return Promise.resolve('no claim');
+}
+
+
 module.exports = (args)=>{
 
 	// 입력 파라미터 유효성 검증 
 	if(!args || args.length==0){
-		// console.error('    parameter error see below :');
-		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-		help('accounts');
-		return;
+		// 기본 값 존재여부 확인
+		if(DEF_AUTHOR){
+			args = []; args.push(DEF_AUTHOR);
+		}else{
+			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+			help('accounts');
+			return;	
+		}
 	}
 
-	// 스피너 동작
-	let spinner = ora().start('load properties');
+	// (STEEM) 스피너 동작
+	spinner = ora().start('load properties');
 
 	// 글로벌 설정 값 로드 
 	steem.api.getDynamicGlobalPropertiesAsync().then(result=>{
@@ -142,7 +179,7 @@ module.exports = (args)=>{
 	    total_vesting_fund_steem = getMoney(result.total_vesting_fund_steem);
 
 	    spinner.start('load accounts');
-	    // 계정 목록 정보 로드
+	    // (STEEM) 계정 목록 정보 로드
 	    return steem.api.getAccountsAsync(args);
 	}).catch(e=>{
 		// spinner.stop();
@@ -163,8 +200,19 @@ module.exports = (args)=>{
 				console.log(``);
 			}
 		}
+
+		// 보상을 요청한다
+		return claimRewards(results, DEF_AUTHOR, DEF_POSTING);
+
 	}).catch(e=>{
 		spinner.fail('load accounts - fail');
 		console.error(`${LIB_FILE_NAME} - fail step 2 : `, e);
-	});
+	}).then(result=>{
+		if(spinner.isSpinning){
+			spinner.succeed('claim reward - success\n');	
+		}
+	}).catch(e=>{
+		spinner.fail('claim reward - fail');
+		console.error(`${LIB_FILE_NAME} - fail step 3 : `, e);
+	})
 };

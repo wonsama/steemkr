@@ -15,9 +15,29 @@
 
 # 사용방법
 
+#### 환경변수 설정
+
+* 나의 계정 정보를 미리 입력하여 다양한 기능을 처리(설정 안해도 되요, 물론 해당 기능은 못씀)
+* 찜찜하다 싶은 분은 꼭 !! github 소스 참조후 설정 바랍니다.
+
+```
+(윈도우의 경우 : 내컴퓨터 - 속성 - 고급 시스템 설정 - 환경변수 )
+(맥/리눅스 경우 : .profile 에 아래 2개값 추가 )
+
+STEEM_AUTHOR : 계정명 
+STEEM_KEY_POSTING : 포스팅키
+```
+
+> STEEM_AUTHOR, STEEM_KEY_POSTING 키 입력시 steemkr accounts 만 해도 계정 정보 확인 및 보상이 있을 경우 자동으로 보상을 청구함.
+> (물론 찝찝하면 안쓰면되요 ^^ )
+
+#### new 
+* 일일 가격변동 확인 : `$ steemkr price <코인타입>`
+
+#### old
+* 계정 정보 확인 : `$ steemkr accounts <계정명>`
 * 도움말 : `$ steemkr help`
 * 버전 : `$ steemkr version`
-* 계정 정보 확인 : `$ steemkr account <계정명>`
 
 # 소스
 
@@ -32,5 +52,5 @@
 
 # 업데이트 이력
 
-* 0.0.6 README.md 수정
+* 0.1.0 price 명령 추가됨 : 가격 확인
 * 0.0.1 최초작성

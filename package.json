@@ -1,7 +1,7 @@
 {
   "name": "steemkr",
-  "version": "0.0.6",
-  "description": "A CLI for steemit that gives you steemit information",
+  "version": "0.1.0",
+  "description": "스팀잇 기반 CLI 툴 : CLI(Command Line Interface) Tool for steemit.",
   "main": "index.js",
   "homepage": "https://steemit.com/@wonsama",
   "scripts": {},
@@ -9,22 +9,25 @@
     "steemkr": "bin/steemkr"
   },
   "repository": {
-    "type":"git",
-    "url":"git+https://github.com/wonsama/steemkr.git"
+    "type": "git",
+    "url": "git+https://github.com/wonsama/steemkr.git"
   },
-  "engines":{
-    "node":">=8"
+  "engines": {
+    "node": ">=8"
   },
   "keywords": [
     "steem",
     "steemit",
     "steemkr"
   ],
-  "preferGlobal":true,
+  "preferGlobal": true,
   "author": "wonsama",
   "license": "MIT",
   "dependencies": {
+    "asciichart": "^1.5.7",
+    "axios": "^0.18.0",
     "dateformat": "^3.0.3",
+    "dotenv": "^6.0.0",
     "minimist": "^1.2.0",
     "ora": "^2.1.0",
     "steem": "^0.7.1"
