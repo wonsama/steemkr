@@ -12,6 +12,9 @@ module.exports = () => {
 	const param = params&&params.length>=0?params[0]:undefined;
 
 	switch(cmd){
+		case 'slb':
+			require('./cmd/slb')(params);
+		break;
 		case 'help':
 			require('./cmd/help')(param);
 		break;

@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    slb ................ 입력받은 계정 및 기간 기준 스팀잇 라이프 벨런스를 보여준다.(글 작성 시간대)
     accounts ........... 입력받은 계정의 정보를 보여줌
     price .............. 오늘의 스팀 가격정보를 알려준다. (upbit 기준)
 
@@ -17,6 +18,11 @@ const menus = {
     UPBIT 기준 오늘의 스팀 가격 정보를 chart를 통해 보여준다.
 
     $ steemkr price
+  `,
+  slb: `
+    입력받은 계정 및 기간 기준 스팀잇 라이프 벨런스를 보여준다.(글 작성 시간대)
+
+    $ steemkr slb wonsama 7
   `,
   accounts: `
     * .env 파일에 ( STEEM_AUTHOR, STEEM_KEY_POSTING ) 값 설정시 reward 존재 시 자동으로 reward를 요청.

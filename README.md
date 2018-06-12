@@ -1,11 +1,15 @@
 # steemkr
-스팀잇 용 CLI (커맨드라인 툴)
+
+## 스팀잇 용 CLI (커맨드라인 툴)
+
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_slb.png)
+<center>[그림 : 스라벨 (글, 댓글 작성 갯수 및 시간대) ]</center>
+
+![ss_price.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_price.png)
+<center>[그림 : upbit 기준 코인가격 확인 ]</center>
 
 ![ss_accounts.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_accounts.png)
 <center>[그림 : 계정 정보 확인]</center>
-
-![ss_price.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_price.png)
-<center>[그림 : UPBIT기준 가격 확인]</center>
 
 # 사전작업
 
@@ -16,6 +20,8 @@
 * 맥 : 터미널(terminal), 윈도우 : 실행 - cmd
 * 이후 터미널(커맨드)창에서 `npm install -g steemkr` 와 같이 입력
 * 맥(우분투 등)은 root 권한으로 설치 `sudo npm install -g steemkr`
+
+> 기존에 하신 분도 위와 같이 하면 자동으로 최신 버전을 업데이트 받습니다.
 
 # 사용방법
 
@@ -36,12 +42,27 @@ STEEM_KEY_POSTING : 포스팅키
 > (물론 찝찝하면 안쓰면되요 ^^ )
 
 #### 신규
-* 일일 가격변동 확인 : `$ steemkr price <코인타입>`
+
+* 스라벨 : `$ steemkr slb <계정명> <일수:기본 - 7>`
 
 #### 기존
+
+> 코인타입은 upbit에서 원화마켓에 존재하는 모든 것을 사용할 수 있습니다. (18.06.01일 기준)
+
+* 일일 가격변동 확인 : `$ steemkr price <코인타입:기본 - STEEM>`
 * 계정 정보 확인 : `$ steemkr accounts <계정명>`
 * 도움말 : `$ steemkr help`
 * 버전 : `$ steemkr version`
+
+#### 기타(환경변수 설정 - 옵션)
+
+* 환경변수에 아래 2가지 값을 설정하면 (계정정보 확인 accounts 명령 실행 시 자동으로 reward를 청구 합니다.)
+* 설정 해도 되고 안해도 됨.( 단, 아래 두 값을 설정하지 않을 경우, 추후 추가되는 일부 기능을 사용할 수 없습니다.)
+
+```
+STEEM_AUTHOR : 계정명 
+STEEM_KEY_POSTING : 포스팅키
+```
 
 # 소스
 
@@ -56,5 +77,6 @@ STEEM_KEY_POSTING : 포스팅키
 
 # 업데이트 이력
 
-* 0.1.0 price 명령 추가됨 : 가격 확인
+* 0.2.0 slb 명령 추가됨 : 스라벨 (글, 댓글 작성 갯수 및 시간대)
+* 0.1.0 price 명령 추가됨 : upbit 기준 코인가격 확인
 * 0.0.1 최초작성
