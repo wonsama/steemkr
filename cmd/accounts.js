@@ -1,4 +1,6 @@
 const help = require('./help');
+const {getLocalTime} = require('../util/wdate');
+
 const steem = require('steem');
 const dateFormat = require('dateformat');
 const ora = require('ora');
@@ -12,21 +14,6 @@ const DEF_POSTING = process.env.STEEM_KEY_POSTING;
 let total_vesting_shares;
 let total_vesting_fund_steem;
 let spinner;
-
-// 시간을 연산한다 
-// h : 시간 
-Date.prototype.addHours = function(h) {
-    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
-    return this;
-}
-
-// created 정보를 Date로 변환 => 한국 +9
-// created : 생성시간 
-function getLocalTime(created){
-    created = created.replace("T", " ")
-    var t = new Date(created).addHours(9);
-    return t;
-}
 
 // 스팀, 스달에서 값 정보만 추출
 // source : 입력값

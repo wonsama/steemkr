@@ -12,6 +12,12 @@ module.exports = () => {
 	const param = params&&params.length>=0?params[0]:undefined;
 
 	switch(cmd){
+		case 'block':
+			require('./cmd/block')(params);
+		break;
+		case 'feed':
+			require('./cmd/feed')(params);
+		break;
 		case 'slb':
 			require('./cmd/slb')(params);
 		break;

@@ -3,7 +3,10 @@ const axios = require('axios');
 const asciichart = require ('asciichart');
 const ora = require('ora');
 
-
+/**
+* 코인 종류의 유효성을 검증한다, 불일치 시 STEEM으로 설정
+* @param args 코인 종류 
+*/
 function getCoin(args){
 	const DEF_COIN = 'STEEM';
 	let coin = args&&args.length>=1?args[0]:undefined;

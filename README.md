@@ -2,6 +2,12 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_block.png)
+<center>[그림 : 차단목록 (날 차단한 사람을 확인할 수 있다.) ]</center>
+
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_feed.png)
+<center>[그림 : 피드보기 (내계정 포함 다른 계정의 피드 실시간으로 확인할 수 있다.) ]</center>
+
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_slb.png)
 <center>[그림 : 스라벨 (글, 댓글 작성 갯수 및 시간대) ]</center>
 
@@ -27,22 +33,27 @@
 
 #### 신규
 
-* 스라벨 : `$ steemkr slb <계정명> <일수:기본 - 7>`
+* 차단목록 : `$ steemkr block <계정명>`
+* 피드보기 : `$ steemkr feed <계정명>`
 
 #### 기존
 
-> 코인타입은 upbit에서 원화마켓에 존재하는 모든 것을 사용할 수 있습니다. (18.06.01일 기준)
-
+* 스라벨 : `$ steemkr slb <계정명> <일수:기본 - 7>`
 * 일일 가격변동 확인 : `$ steemkr price <코인타입:기본 - STEEM>`
 * 계정 정보 확인 : `$ steemkr accounts <계정명>`
 * 도움말 : `$ steemkr help`
 * 버전 : `$ steemkr version`
 
+> 코인타입은 upbit에서 원화마켓에 존재하는 모든 것을 사용할 수 있습니다. (18.06.01일 기준)
 
 #### 기타(환경변수 설정 - 옵션)
 
-* 환경변수에 아래 2가지 값을 설정하면 (계정정보 확인 accounts 명령 실행 시 자동으로 reward를 청구 합니다.)
-* 설정 해도 되고 안해도 됨.( 단, 아래 두 값을 설정하지 않을 경우, 추후 추가되는 일부 기능을 사용할 수 없습니다.)
+* STEEM_AUTHOR 값을 설정하는 경우 <계정명> 에 해당하는 부분이 자동으로 입력 됩니다.
+* STEEM_KEY_POSTING 값을 설정하는 경우 <포스팅키> 에 해당하는 부분이 자동으로 입력 됩니다.
+* STEEM_KEY_ACTIVE 값을 설정하는 경우 <액티브키> 에 해당하는 부분이 자동으로 입력 됩니다.
+* accounts : STEEM_AUTHOR, STEEM_KEY_POSTING 설정 시 자동으로 reward를 청구함
+* 설정 해도 되고 안해도 됨.(단,추후 추가되는 일부 기능을 사용할 수 없습니다.)
+
 
 ```
 STEEM_AUTHOR : 계정명 
@@ -57,11 +68,12 @@ STEEM_KEY_POSTING : 포스팅키
 
 # 맺음말
 
-* 현재는 테스트용인지라 명령어가 별로 없네요 ㅜㅜ
-* 앞으로 조금씩 추가할 예정
+* 나름 조금씩 추가되어가고 있네요. 
+* 저 차단하신분 해제좀 ㅜㅜ 착하게 살께요 ~
 
 # 업데이트 이력
 
+* 0.3.0 block, feed 명령 추가됨 : 차단목록, 피드보기
 * 0.2.0 slb 명령 추가됨 : 스라벨 (글, 댓글 작성 갯수 및 시간대)
 * 0.1.0 price 명령 추가됨 : upbit 기준 코인가격 확인
 * 0.0.1 accounts 명령 추가됨 : 최초작성
