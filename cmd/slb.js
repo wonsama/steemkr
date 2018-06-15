@@ -1,7 +1,13 @@
+const {getBeforeDate} = require ('../util/wdate');
+const {getLocalTime} = require ('../util/wdate');
+
 const steem = require('steem');
 const dateFormat = require('dateformat');
 const asciichart = require ('asciichart');
 const ora = require('ora');
+
+// 기본값
+const DEF_AUTHOR = process.env.STEEM_AUTHOR;
 
 // 배열 값을 갯수만큼 초기화 해준다
 function initArray(cnt, val=0){
@@ -11,36 +17,6 @@ function initArray(cnt, val=0){
 	}
 	return arr;
 }
-
-// 시간을 연산한다 
-// h : 시간 
-Date.prototype.addHours = function(h) {
-    this.setTime(this.getTime() + (h * 60 * 60 * 1000));
-    return this;
-}
-
-// created 정보를 Date로 변환 => 한국 +9
-// created : 생성시간 
-function getLocalTime(created){
-    created = created.replace("T", " ")
-    var t = new Date(created).addHours(9);
-    return t;
-}
-
-// 이전 날짜를 확인한다
-// day : 몇일전
-// startWithZero : 00:00:00 일 부터 시작할지 여부
-function getBeforeDate(day, startWithZero=true){
-	var date = new Date();
-	date.setDate(date.getDate() - day);
-	if(startWithZero){
-		date.setHours(0);
-		date.setMinutes(0);
-		date.setSeconds(0);
-	}
-	return date;
-}
-
 
 // 글 구분
 // op_item : 항목
@@ -134,6 +110,10 @@ async function loadSLB(account, day=7, ninfos=[], from=Number.MAX_SAFE_INTEGER, 
 	}
 }
 
+/*
+* TOP3 시간 정보를 보여준다 
+* @param hourBlocks 시간목록 정보
+*/
 function printBlockToTime(hourBlocks){
 
 	let i = 0;
@@ -159,15 +139,41 @@ function printBlockToTime(hourBlocks){
 		return `${x.t}h (${x.v})`;
 	}
 	
-	console.log(`시간 상세 : ( 1st : ${getTime(hourBlocksSort[0])}, 2nd : ${getTime(hourBlocksSort[1])}, 3rd : ${getTime(hourBlocksSort[2])})`);
-	console.log(hours.join(', ')) ;
+	console.log(`TOP 3 : ( 1st : ${getTime(hourBlocksSort[0])}, 2nd : ${getTime(hourBlocksSort[1])}, 3rd : ${getTime(hourBlocksSort[2])})`);
+	// console.log(hours.join(', ')) ;
 }
 
 
-module.exports = (args)=>{
+/*
+* 차트를 그려준다
+* @param command 명령
+* @param results 데이터
+*/
+function drawChart(command, results){
+		
+	let hourBlocks = initArray(24);
+	const ASCII_CONFIG = {
+	    offset:  7,          // axis offset from the left (min 2)
+	    padding: '     ',  // padding string for label formatting (can be overrided)
+	    height:  10,         // any height you want	
+	};
 
-	let slbAccount = args[0];
-	let slbDays = args[1]?args[1]:7;	// 기본 7일
+	let sum = 0;
+	for(let result of results){
+		if(result.g==command){
+			let v = hourBlocks[Number(result.h)];
+			v=v+1;
+			sum=sum+1;
+			hourBlocks[Number(result.h)]=v;
+		}
+	}
+
+	console.log(`${command} total counts : ${sum}`);
+	printBlockToTime(hourBlocks);
+	console.log(asciichart.plot(hourBlocks, ASCII_CONFIG)+'\n');
+}
+
+module.exports = (args)=>{
 
 	// 입력 파라미터 유효성 검증 
 	if(!args || args.length==0){
@@ -180,6 +186,9 @@ module.exports = (args)=>{
 			return;	
 		}
 	}
+
+	let slbAccount = args[0];
+	let slbDays = args[1]?args[1]:7;	// 기본 7일
 	
 	loadSLB( slbAccount, slbDays)
 	.then(results=>{
@@ -194,29 +203,5 @@ module.exports = (args)=>{
 	.catch(e=>{
 		console.error('error', e);
 	});
-
-	function drawChart(command, results){
-		
-		let hourBlocks = initArray(24);
-		const ASCII_CONFIG = {
-		    offset:  7,          // axis offset from the left (min 2)
-		    padding: '     ',  // padding string for label formatting (can be overrided)
-		    height:  10,         // any height you want	
-		};
-
-		let sum = 0;
-		for(let result of results){
-			if(result.g==command){
-				let v = hourBlocks[Number(result.h)];
-				v=v+1;
-				sum=sum+1;
-				hourBlocks[Number(result.h)]=v;
-			}
-		}
-
-		console.log(`${command} total counts : ${sum}`);
-		printBlockToTime(hourBlocks);
-		console.log(asciichart.plot(hourBlocks, ASCII_CONFIG)+'\n');
-	}
 
 };
