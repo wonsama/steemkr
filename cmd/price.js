@@ -3,13 +3,15 @@ const axios = require('axios');
 const asciichart = require ('asciichart');
 const ora = require('ora');
 
+const STEEM_PRICE_COIN = process.env.STEEM_PRICE_COIN;
+
 /**
 * 코인 종류의 유효성을 검증한다, 불일치 시 STEEM으로 설정
 * @param args 코인 종류 
 */
 function getCoin(args){
 	const DEF_COIN = 'STEEM';
-	let coin = args&&args.length>=1?args[0]:undefined;
+	let coin = args&&args.length>=1?args[0].toUpperCase():undefined;
 	const avail = [
 	'EOS',	// 이오스 
 	'TRX',	// 트론
@@ -76,7 +78,18 @@ function getCoin(args){
 
 module.exports = (args)=>{
 	
-	// console.log('args', args);
+	// 입력 파라미터 유효성 검증 
+	if(!args || args.length==0){
+		// 기본 값 존재여부 확인
+		if(STEEM_PRICE_COIN){
+			args = []; args.push(STEEM_PRICE_COIN);
+		}
+		// else{
+		// 	console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+		// 	help('price');
+		// 	return;	
+		// }
+	}
 
 	const MARKET = 'KRW';	// 일단 원화 마켓만
 	const COIN = getCoin(args);

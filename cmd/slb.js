@@ -7,7 +7,8 @@ const asciichart = require ('asciichart');
 const ora = require('ora');
 
 // 기본값
-const DEF_AUTHOR = process.env.STEEM_AUTHOR;
+const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
+const STEEM_SLB_DAY = process.env.STEEM_SLB_DAY;
 
 // 배열 값을 갯수만큼 초기화 해준다
 function initArray(cnt, val=0){
@@ -178,8 +179,11 @@ module.exports = (args)=>{
 	// 입력 파라미터 유효성 검증 
 	if(!args || args.length==0){
 		// 기본 값 존재여부 확인
-		if(DEF_AUTHOR){
-			args = []; args.push(DEF_AUTHOR);
+		if(STEEM_AUTHOR){
+			args = []; args.push(STEEM_AUTHOR);
+			if(STEEM_SLB_DAY){
+				args.push(STEEM_SLB_DAY);
+			}
 		}else{
 			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
 			help('slb');
