@@ -75,7 +75,12 @@ function loadContentsByTag(tag) {
             }, 1000 * RELOAD_SEC);
         })
         .catch(e => {
-        	console.log(e)
+            // 오류 발생 시 컨텐츠를 다시 읽어 들인다.
+            spinner.fail(`load fail reload contents at ${dateFormat(new Date(),'mm/dd HH:MM:ss')} - ${e.toString()}`);
+            // RELOAD CONTENTS
+            setTimeout(() => {
+                loadContentsByTag(tag);
+            }, 1000 * RELOAD_SEC);
         });
 }
 

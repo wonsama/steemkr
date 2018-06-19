@@ -1,4 +1,5 @@
 const {getLocalTime} = require ('../util/wdate');
+const {error} = require ('../util/error');
 
 const steem = require('steem');
 const ora = require('ora');
@@ -18,15 +19,15 @@ let READ_CONTENTS = [];
 */
 let loadFeed = (author, limit, showReblog=true) =>{
 
-	// let timeStart = new Date();
-	// let spinner = ora().start('readload');
+	let timeStart = new Date();
+	let spinner = ora().start('reload');
 
 	steem.api.getDiscussionsByFeedAsync({tag:author, limit:limit})
 	.then(results=>{
 
-		// let timeEnd = new Date();
-		// let timeGap = Math.floor((timeEnd.getTime() - timeStart.getTime()) / 1000);
-		// spinner.succeed(`read end : ${dateFormat(timeEnd, 'yyyy-mm-dd HH:MM:ss')} ( elapsed time : ${timeGap} sec )`);
+		let timeEnd = new Date();
+		let timeGap = Math.floor((timeEnd.getTime() - timeStart.getTime()) / 1000);
+		spinner.succeed(`reload end : ${dateFormat(timeEnd, 'yyyy-mm-dd HH:MM:ss')} ( elapsed time : ${timeGap} sec )`);
 
 		let PRINTS = [];
 
@@ -96,7 +97,12 @@ let loadFeed = (author, limit, showReblog=true) =>{
 		setTimeout(()=>{loadFeed(author, limit, showReblog)}, RELOAD_TIME);
 	})
 	.catch(e=>{
-		console.log(e)
+
+		// 오류 발생 시 컨텐츠를 다시 읽어 들인다.
+		spinner.fail(`load fail reload contents at ${dateFormat(new Date(),'mm/dd HH:MM:ss')} - ${e.toString()}`);
+
+		// RELOAD_TIME 이후 다시 컨텐츠를 읽어들인다.
+		setTimeout(()=>{loadFeed(author, limit, showReblog)}, RELOAD_TIME);
 	})	
 }
 
