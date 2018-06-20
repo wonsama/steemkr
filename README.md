@@ -2,26 +2,31 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_resteem.png)
+<center>[ 그림 : 리스팀, 7일(payout)이 지난 글 또한 리블로그가 가능 ]</center>
+
+
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_taglive.png)
-<center>[그림 : 태그라이브, 태그기준 피드정보를 실시간으로 확인할 수 있다.]</center>
+<center>[ 그림 : 태그라이브, 태그기준 피드정보를 실시간으로 확인할 수 있다 ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_powerup.png)
-<center>[그림 : 스파업, 손쉽게 스파업을 할 수 있다. ]</center>
+<center>[ 그림 : 스파업, 손쉽게 스파업을 할 수 있다 ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_block.png)
-<center>[그림 : 차단목록 (날 차단한 사람을 확인할 수 있다.) ]</center>
+<center>[ 그림 : 차단목록 (날 차단한 사람을 확인할 수 있다) ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_feed.png)
-<center>[그림 : 피드보기 (내계정 포함 다른 계정의 피드 실시간으로 확인할 수 있다.) ]</center>
+<center>[ 그림 : 피드보기 (내계정 포함 다른 계정의 피드 실시간으로 확인할 수 있다) ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_slb.png)
-<center>[그림 : 스라벨 (글, 댓글 작성 갯수 및 시간대) ]</center>
+<center>[ 그림 : 스라벨 (글, 댓글 작성 갯수 및 시간대) ]</center>
 
 ![ss_price.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_price.png)
-<center>[그림 : upbit 기준 코인가격 확인 ]</center>
+<center>[ 그림 : upbit 기준 코인가격 확인 ]</center>
 
 ![ss_accounts.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_accounts.png)
-<center>[그림 : 계정 정보 확인]</center>
+<center>[ 그림 : 계정 정보 확인 ]</center>
 
 # 사전작업
 
@@ -39,11 +44,12 @@
 
 #### 신규
 
-* 태그라이브(tl) : `$ steemkr taglive <STEEM_TAG>`
-* 스파업(pw) : `$ steemkr powerup <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 리스팀(re) : `$ steemkr resteem [REBLOG_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
 
 #### 기존
 
+* 태그라이브(tl) : `$ steemkr taglive <STEEM_TAG>`
+* 스파업(pw) : `$ steemkr powerup <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 차단목록(bl) : `$ steemkr block <STEEM_AUTHOR>`
 * 피드보기(fd) : `$ steemkr feed <STEEM_AUTHOR>`
 * 스라벨(sl) : `$ steemkr slb <STEEM_AUTHOR> <STEEM_SLB_DAY-옵션,기본7일>`
@@ -62,6 +68,13 @@
 * 설정방법 : 네이버/구글에서 `환경변수 설정방법` 으로 검색하여 확인 바랍니다.
 
 #### 설정 가능한 환경변수 종류
+
+(new)
+
+* STEEM_RESTEEM_AUTHOR 리스팀 작가(유저명) 정보가 자동으로 입력됩니다.
+* STEEM_RESTEEM_KEY_POSTING 값을 설정하는 경우 리스팀 작가(유저) 포스팅 키값이 자동으로 입력됩니다.
+
+(old)
 
 * STEEM_AUTHOR 작가(유저명) 정보가 자동으로 입력됩니다.
 * STEEM_KEY_POSTING 값을 설정하는 경우 포스팅 키값이 자동으로 입력됩니다.
@@ -86,7 +99,12 @@
 
 # 최근 업데이트 이력
 
-* 0.4.0 powerup, taglive 명령 추가됨
+#### 0.5.0
+
+* reblog
+  * 7일이 지난 글또한 리블로깅 가능
+  * 설정값(STEEM_REBLOG_AUTHOR, STEEM_REBLOG_KEY_POSTING)을 지정하면 내계정 또는 타계정으로(부계정) 리블로깅 가능
+* 입력 파라미터 점검로직 수정
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
@@ -99,4 +117,4 @@
 
 # 맺음말
 
-* 나름 조금씩 추가되어가고 있네요
+* 리스팀 7일 지나도 가능하네요 -_-; 그런데 왜 스팀잇에는 버튼이 없어질까 ? 흠...

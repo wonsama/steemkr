@@ -1,3 +1,4 @@
+const help = require('./help');
 const {getLocalTime} = require ('../util/wdate');
 const {error} = require ('../util/error');
 
@@ -10,7 +11,7 @@ const READ_CONTENTS_MAX = 100;
 const READ_COUNTS = 20;	// 1 ~ 100
 
 // 기본값
-const DEF_AUTHOR = process.env.STEEM_AUTHOR;
+const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
 
 let READ_CONTENTS = [];
 
@@ -106,23 +107,45 @@ let loadFeed = (author, limit, showReblog=true) =>{
 	})	
 }
 
+/*
+* 파라미터 정보를 초기화 해준다
+* @param args 외부로부터 입력받은 파라미터 
+*/
+function initParams(args)
+{
+	// 초기화
+	args = args?args:[];  // new 처리 하므로 return 처리 해야 됨에 유의
 
-module.exports = (args)=>{
-
-	// 입력 파라미터 유효성 검증 
-	if(!args || args.length==0){
-		// 기본 값 존재여부 확인
-		if(DEF_AUTHOR){
-			args = []; args.push(DEF_AUTHOR);
-		}else{
-			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-			help('feed');
-			return;	
+	// 1번째 : 작가
+	if(args.length==0){
+		if(STEEM_AUTHOR){
+			args.push(STEEM_AUTHOR);
 		}
 	}
 
-	let author = args[0];
-	let showReblog = args[1]&&args[1].toUpperCase()=='N'?false:true;
+	// 2번째 : 리블로그 표시여부
+	if(args.length==1){
+		// 기본값으로 true를 설정
+		args.push(true);
+	}
 
-	loadFeed('wonsama', READ_COUNTS, showReblog);
+	return args;
+}
+
+module.exports = (args)=>{
+
+	// 파라미터 초기화
+	args = initParams(args);
+
+	// 입력 파라미터 유효성 검증 
+	if(args.length!=2){
+		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+		help('feed');
+		return;
+	}
+
+	let author = args[0];
+	let showReblog = args[1];	// hidden params - default : true
+
+	loadFeed( author, READ_COUNTS, showReblog );
 };

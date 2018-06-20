@@ -5,32 +5,6 @@ const error = require('./util/error');
 // 환경 변수값을 로딩한다 
 require("dotenv").config();
 
-/*
-* 입력받은 파라미터 정보가 유효한지 검증
-* 갯수 또는 설정값에 키
-*/
-function isValidParams(cmd, params, keys){
-
-	if(params.length>=keys.length){
-		return true;
-	}
-
-	let isValid = true;
-	for(let key of keys){
-		let k = process.env[key];
-		if(!k){
-			isValid = false; 
-		}
-	}
-
-	// 경고문구 출력
-	if(!isValid){
-		console.error(`${cmd} 명령을 확인 바랍니다. 기본적으로 ${keys.join(', ')} 의 설정 정보가 필요합니다.`);
-	}
-
-	return isValid;
-}
-
 module.exports = () => {
 	const args = minimist(process.argv.slice(2));
 	const cmd = args._[0];
@@ -41,45 +15,29 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 're':
+		case 'resteem':
+			require('./cmd/resteem')(params);
+		break;
 		case 'tl':
 		case 'taglive':
-			if(isValidParams(cmd, params, ['STEEM_TAG'])){
-				require('./cmd/taglive')(params);
-			}else{
-				require('./cmd/help')('taglive');
-			}
+			require('./cmd/taglive')(params);
 		break;
 		case 'pw':
 		case 'powerup':
-			if(isValidParams(cmd, params, ['STEEM_AUTHOR','STEEM_KEY_ACTIVE'])){
-				require('./cmd/powerup')(params);
-			}else{
-				require('./cmd/help')('powerup');
-			}
+			require('./cmd/powerup')(params);
 		break;
 		case 'bl':
 		case 'block':
-			if(isValidParams(cmd, params, ['STEEM_AUTHOR'])){
-				require('./cmd/block')(params);
-			}else{
-				require('./cmd/help')('block');
-			}
+			require('./cmd/block')(params);
 		break;
 		case 'fd':
 		case 'feed':
-			if(isValidParams(cmd, params, ['STEEM_AUTHOR'])){
-				require('./cmd/feed')(params);
-			}else{
-				require('./cmd/help')('feed');
-			}
+			require('./cmd/feed')(params);
 		break;
 		case 'sl':
 		case 'slb':
-			if(isValidParams(cmd, params, ['STEEM_AUTHOR'])){
-				require('./cmd/slb')(params);
-			}else{
-				require('./cmd/help')('slb');
-			}
+			require('./cmd/slb')(params);
 		break;
 		case 'hp':
 		case 'help':
@@ -99,11 +57,7 @@ module.exports = () => {
 		break;
 		case 'ac':
 		case 'accounts':
-			if(isValidParams(cmd, params, ['STEEM_AUTHOR'])){
-				require('./cmd/accounts')(params);	
-			}else{
-				require('./cmd/help')('accounts');
-			}
+			require('./cmd/accounts')(params);
 		break;
 		case undefined:
 			error(`\n    하위 명령어가 존재하지 않습니다. 아래 메뉴얼을 참조 바랍니다.`, false);

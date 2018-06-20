@@ -6,6 +6,8 @@ const dateFormat = require('dateformat');
 const asciichart = require ('asciichart');
 const ora = require('ora');
 
+const DEFAULT_DAY = 7;
+
 // 기본값
 const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
 const STEEM_SLB_DAY = process.env.STEEM_SLB_DAY;
@@ -174,25 +176,49 @@ function drawChart(command, results){
 	console.log(asciichart.plot(hourBlocks, ASCII_CONFIG)+'\n');
 }
 
-module.exports = (args)=>{
+/*
+* 파라미터 정보를 초기화 해준다
+* @param args 외부로부터 입력받은 파라미터 
+*/
+function initParams(args)
+{
+	// 초기화
+	args = args?[]:args;	// new 처리 하므로 return 처리 해야 됨에 유의
 
-	// 입력 파라미터 유효성 검증 
-	if(!args || args.length==0){
-		// 기본 값 존재여부 확인
+	// 1번째 : 작가
+	if(args.length==0){
 		if(STEEM_AUTHOR){
-			args = []; args.push(STEEM_AUTHOR);
-			if(STEEM_SLB_DAY){
-				args.push(STEEM_SLB_DAY);
-			}
-		}else{
-			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-			help('slb');
-			return;	
+			args = [];
+			args.push(STEEM_AUTHOR);
 		}
 	}
 
+	// 2번째 : 날짜 
+	if(args.length==1){
+		if(STEEM_SLB_DAY){
+			args.push(STEEM_SLB_DAY);
+		}else{
+			args.push(DEFAULT_DAY);	// 기본 7일
+		}
+	}
+
+	return args;
+}
+
+module.exports = (args)=>{
+
+	// 파라미터 초기화
+	initParams(args);
+
+	// 입력 파라미터 유효성 검증 
+	if(args.length!=2){
+		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+		help('slb');
+		return;	
+	}
+
 	let slbAccount = args[0];
-	let slbDays = args[1]?args[1]:7;	// 기본 7일
+	let slbDays = args[1];
 	
 	loadSLB( slbAccount, slbDays)
 	.then(results=>{

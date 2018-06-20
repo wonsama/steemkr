@@ -1,13 +1,12 @@
-/*
-* see : https://nodejs.org/api/readline.html
-*/
+const help = require('./help');
 const steem = require('steem');
 const readline = require('readline');
 const ora = require('ora');
 
+const DEFAULT_STEEM = '0.000 STEEM';
+
 const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
 const STEEM_KEY_ACTIVE = process.env.STEEM_KEY_ACTIVE;
-const DEFAULT_STEEM = '0.000 STEEM';
 
 /*
 * 잔고에서 요청할 스팀 파워 정보를 계산한다
@@ -29,26 +28,42 @@ function getSteem(answer, balance){
 	}
 }
 
-module.exports = (args)=>{
+/*
+* 파라미터 정보를 초기화 해준다
+* @param args 외부로부터 입력받은 파라미터 
+*/
+function initParams(args)
+{
+	// 초기화
+	args = args?args:[];  // new 처리 하므로 return 처리 해야 됨에 유의
 
-	// 입력 파라미터 유효성 검증 
-	if(!args || args.length==0){
-		// 기본 값 존재여부 확인
+	// 1번째 : 작가
+	if(args.length==0){
 		if(STEEM_AUTHOR){
-			args = []; args.push(STEEM_AUTHOR);
-			if(STEEM_KEY_ACTIVE){
-				args.push(STEEM_KEY_ACTIVE);
-			}
-		}else{
-			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-			help('powerup');
-			return;	
+			args.push(STEEM_AUTHOR);
 		}
 	}
-	if(args.length<2){
+
+	// 2번째 : 엑티브키
+	if(args.length==1){
+		if(STEEM_KEY_ACTIVE){
+			args.push(STEEM_KEY_ACTIVE);
+		}
+	}
+
+	return args;
+}
+
+module.exports = (args)=>{
+
+	// 파라미터 초기화
+	args = initParams(args);
+
+	// 입력 파라미터 유효성 검증 
+	if(args.length!=2){
 		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
 		help('powerup');
-		return;	
+		return;
 	}
 
 	let author = args[0];

@@ -1,36 +1,18 @@
 const help = require('./help');
 const {getLocalTime} = require('../util/wdate');
+const {getMoney} = require('../util/wsteem');
 
 const steem = require('steem');
 const dateFormat = require('dateformat');
 const ora = require('ora');
 
-const LIB_FILE_NAME = 'accounts.js';
-
 // 기본값
-const DEF_AUTHOR = process.env.STEEM_AUTHOR;
-const DEF_POSTING = process.env.STEEM_KEY_POSTING;
+const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
+const STEEM_KEY_POSTING = process.env.STEEM_KEY_POSTING;
 
 let total_vesting_shares;
 let total_vesting_fund_steem;
 let spinner;
-
-// 스팀, 스달에서 값 정보만 추출
-// source : 입력값
-// 입력금액 합산 (소숫점 아래 3자리 유지)
-function getMoney(...source){
-	try{
-
-		let sum = 0;
-		for(let m of source){
-			sum+=Number(m.split(' ')[0]);
-		}
-		return Number(sum.toPrecision(4));
-
-	}catch(e){
-		return 0;
-	}
-}
 
 function analysis(result){
 
@@ -112,10 +94,12 @@ function analysis(result){
 	];	
 }
 
-// 보상을 요청한다
-// results : 결과 
-// author : 계정명
-// posting : POSTING KEY
+/*
+* 보상을 요청한다
+* @param results 결과정보
+* @param author 저자 
+* @param posting 포스팅키 
+*/
 function claimRewards(results, author, posting){
 
 	// 요청 정보가 본인이며 기본 설정값이 존재하는지 확인 
@@ -139,19 +123,42 @@ function claimRewards(results, author, posting){
 	return Promise.resolve('no claim');
 }
 
+/*
+* 파라미터 정보를 초기화 해준다
+* @param args 외부로부터 입력받은 파라미터 
+*/
+function initParams(args)
+{
+	// 초기화
+	args = args?args:[];  // new 처리 하므로 return 처리 해야 됨에 유의
+
+	// 1번째 : 작가
+	if(args.length==0){
+		if(STEEM_AUTHOR){
+			args.push(STEEM_AUTHOR);
+		}
+	}
+
+	// 2번째 : 포스팅키 
+	if(args.length==1){
+		if(STEEM_KEY_POSTING){
+			args.push(STEEM_KEY_POSTING);
+		}
+	}
+
+	return args;
+}
 
 module.exports = (args)=>{
 
+  // 파라미터 초기화
+	args = initParams(args);
+
 	// 입력 파라미터 유효성 검증 
-	if(!args || args.length==0){
-		// 기본 값 존재여부 확인
-		if(DEF_AUTHOR){
-			args = []; args.push(DEF_AUTHOR);
-		}else{
-			console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-			help('accounts');
-			return;	
-		}
+	if(args.length!=1 && args.length!=2){
+		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+		help('accounts');
+		return;	
 	}
 
 	// (STEEM) 스피너 동작
@@ -160,18 +167,19 @@ module.exports = (args)=>{
 	// 글로벌 설정 값 로드 
 	steem.api.getDynamicGlobalPropertiesAsync().then(result=>{
 			
-			spinner.succeed('load properties - success');
+		spinner.succeed('load properties - success');
 
-	    total_vesting_shares = getMoney(result.total_vesting_shares);
-	    total_vesting_fund_steem = getMoney(result.total_vesting_fund_steem);
+    total_vesting_shares = getMoney(result.total_vesting_shares);
+    total_vesting_fund_steem = getMoney(result.total_vesting_fund_steem);
 
-	    spinner.start('load accounts');
-	    // (STEEM) 계정 목록 정보 로드
-	    return steem.api.getAccountsAsync(args);
+    spinner.start('load accounts');
+    // (STEEM) 계정 목록 정보 로드
+    return steem.api.getAccountsAsync(args);
+    
 	}).catch(e=>{
 		// spinner.stop();
 		spinner.fail('load properties - fail');
-		console.error(`${LIB_FILE_NAME} - fail step 1 : `, e);
+		console.error(`load properties - fail : `, e);
 	}).then(results=>{
 
 		spinner.succeed('load accounts - success\n');
@@ -189,17 +197,17 @@ module.exports = (args)=>{
 		}
 
 		// 보상을 요청한다
-		return claimRewards(results, DEF_AUTHOR, DEF_POSTING);
+		return claimRewards(results, STEEM_AUTHOR, STEEM_KEY_POSTING);
 
 	}).catch(e=>{
 		spinner.fail('load accounts - fail');
-		console.error(`${LIB_FILE_NAME} - fail step 2 : `, e);
+		console.error(`load accounts - fail : `, e);
 	}).then(result=>{
 		if(spinner.isSpinning){
 			spinner.succeed('claim reward - success\n');	
 		}
 	}).catch(e=>{
 		spinner.fail('claim reward - fail');
-		console.error(`${LIB_FILE_NAME} - fail step 3 : `, e);
+		console.error(`claim reward - fail : `, e);
 	})
 };
