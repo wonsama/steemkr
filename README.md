@@ -4,7 +4,7 @@
 
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_resteem.png)
-<center>[ 그림 : 리스팀, 7일(payout)이 지난 글 또한 리블로그가 가능 ]</center>
+<center>[ 그림 : 리스팀, 7일(payout)이 지난 글 또한 가능 ]</center>
 
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_taglive.png)
@@ -44,7 +44,7 @@
 
 #### 신규
 
-* 리스팀(re) : `$ steemkr resteem [REBLOG_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
+* 리스팀(re) : `$ steemkr resteem [RESTEEM_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
 
 #### 기존
 
@@ -101,9 +101,9 @@
 
 #### 0.5.0
 
-* reblog
-  * 7일이 지난 글또한 리블로깅 가능
-  * 설정값(STEEM_REBLOG_AUTHOR, STEEM_REBLOG_KEY_POSTING)을 지정하면 내계정 또는 타계정으로(부계정) 리블로깅 가능
+* resteem
+  * 7일이 지난 글또한 리스팀 가능
+  * 설정값(STEEM_RESTEEM_AUTHOR, STEEM_RESTEEM_KEY_POSTING)을 지정하면 내계정 또는 타계정으로(부계정) 리스팀 가능
 * 입력 파라미터 점검로직 수정
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
