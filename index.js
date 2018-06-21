@@ -15,6 +15,14 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'bl':
+		case 'buycancel':
+			require('./cmd/buycancel')(params);
+		break;
+		case 'bm':
+		case 'buysteem':
+			require('./cmd/buysteem')(params);
+		break;
 		case 're':
 		case 'resteem':
 			require('./cmd/resteem')(params);

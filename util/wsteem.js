@@ -12,8 +12,8 @@ fn.getMoney = (...source)=>{
     for(let m of source){
       sum+=Number(m.split(' ')[0]);
     }
-    return Number(sum.toPrecision(4));
-
+    // return Number(sum.toPrecision(4));
+    return sum;
   }catch(e){
     return 0;
   }

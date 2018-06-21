@@ -7,6 +7,15 @@ Date.prototype.addHours = function(h) {
     return this;
 }
 
+/*
+* 현재 시간 기준 입력받은 시간을 기준으로 변경된 시간 정보를 반환한다
+* @param h 입력 받은 시간
+* @return 현재 시간 기준 입력받은 시간을 기준으로 변경된 시간
+*/
+fn.getNowCHour = (h) =>{
+	return new Date().addHours(h);
+}
+
 // created 정보를 Date로 변환 => 한국 +9
 // created : 생성시간 
 fn.getLocalTime = (created)=>{
