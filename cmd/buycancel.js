@@ -4,6 +4,7 @@ const {to} = require('../util/wutil');
 
 const steem = require('steem');
 const dateFormat = require('dateformat');
+const ora = require('ora');
 
 // 기본값
 
@@ -37,17 +38,21 @@ function initParams(args)
   return args;
 }
 
+let spinner;
 async function orderCancel(author, wif){
 
   let err;
 
   // 내부거래소 주문 목록 조회
   let orders;
+  spinner = ora().start('loading orders');
   [err,orders] = await to(steem.api.getOpenOrdersAsync(author));
   if(err){
     // 오류처리
+    spinner.fail();
     return Promise.reject(err);
   }
+  spinner.succeed(' ');
 
   // 내부거래소 주문 목록 출력 
   let orderlist = [];
@@ -85,11 +90,14 @@ async function orderCancel(author, wif){
 
   // 주문 취소
   let cancel;
+  spinner = ora().start('canceling orders');
   [err,cancel] = await to(steem.broadcast.limitOrderCancelAsync(wif, author, orderid));
   if(err){
     // 오류처리
+    spinner.fail();
     return Promise.reject(err);
   }
+  spinner.succeed(' ');
 
   return Promise.resolve(orderid);
 }

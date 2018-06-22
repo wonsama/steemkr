@@ -15,6 +15,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'bd':
+		case 'buysbd':
+			require('./cmd/buysbd')(params);
+		break;
 		case 'bl':
 		case 'buycancel':
 			require('./cmd/buycancel')(params);

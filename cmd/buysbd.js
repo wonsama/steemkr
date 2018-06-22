@@ -25,7 +25,7 @@ const STEEM_ORDER_LIMIT = process.env.STEEM_ORDER_LIMIT;
 * @param limit 최근 거래기록 가져올 갯수 (1~500, 기본 500)
 */
 let spinner;
-async function buysteem(account, wif, limit){
+async function buysbd(account, wif, limit){
     
   // 오류처리용
   let err;
@@ -49,18 +49,18 @@ async function buysteem(account, wif, limit){
 
   spinner.succeed(' ');
   console.log(`____________________________________________________________`);
-  console.log(` [buysteem] SBD을 가지고 STEEM을 구매`);
+  console.log(` [buysbd] STEEM을 가지고 SBD을 구매`);
   
   // 잔액정보 확인
-  let sbd_balance = acc[0].sbd_balance;
-  let sbd = getMoney(sbd_balance);
-  if(sbd==0){
+  let balance = acc[0].balance;
+  let steem_balance = getMoney(balance);
+  if(steem_balance==0){
       // 오류처리
-      return Promise.reject(`@${account} 님의 SBD 잔액이 0.000 SBD 입니다.`);
+      return Promise.reject(`@${account} 님의 STEEM 잔액이 0.000 SBD 입니다.`);
   }
-	
+
   console.log(`____________________________________________________________`);
-  console.log(` @${account} 님의 SBD 잔고 : ${sbd_balance}`);
+  console.log(` @${account} 님의 STEEM 잔고 : ${balance}`);
   console.log(`____________________________________________________________`);
 
   // UPBIT 가격확인 SBD/STEEM
@@ -114,54 +114,58 @@ async function buysteem(account, wif, limit){
   let min = Number.MAX_SAFE_INTEGER;
   let max = 0;
   let order_price;
-  let lastest = orders.asks[0].real_price;
-  for(let ask of orders.asks){
-    if(min>Number(ask.real_price)){
-      min = ask.real_price;
-      order_price = ask.order_price;
+  let lastest = orders.bids[0].real_price;
+  for(let bid of orders.bids){
+    // if(min>Number(bid.real_price)){
+    //   min = bid.real_price;
+    //   order_price = bid.order_price;
+    // }
+    min = Math.min(min,Number(bid.real_price));
+    // max = Math.max(max,Number(bid.real_price));
+    if(max<Number(bid.real_price)){
+      max = bid.real_price;
+      order_price = bid.order_price;
     }
-    // min = Math.min(min,Number(ask.real_price));
-    max = Math.max(max,Number(ask.real_price));
   }
 
   // sbd / steem
   // real_price : 낮을수록 저렴
   console.log(`____________________________________________________________`);
-  console.log(` 매도(asks) 비율가(SBD/STEEM) - 수치가 낮을수록 싸게 산것`);
+  console.log(` 매수(bids) 비율가(SBD/STEEM) - 수치가 높을수록 싸게 산것`);
   console.log(` 최근 ${limit} 개 거래의 가격을 바탕으로 나타냄`);
   console.log(`____________________________________________________________`);
-  console.log(` 최저가(min) : ${min} [ quote : ${order_price.quote}, base : ${order_price.base} ]`);
-  console.log(` 최고가(max) : ${max}`);
+  console.log(` 최저가(min) : ${min}`);
+  console.log(` 최고가(max) : ${max} [ quote : ${order_price.quote}, base : ${order_price.base} ]`);
   console.log(` 최근가(lastest) : ${lastest}`);
   console.log(`____________________________________________________________`);
 
   // 교환 금액 문의
   let amount;
-  [err,amount] = await to(question(`SBD를 얼마나 교환하시겠습니까 ( Max : ${sbd} / 기본값 all ) ? `));
+  [err,amount] = await to(question(`STEEM 을 얼마나 교환하시겠습니까 ( Max : ${balance} / 기본값 all ) ? `));
   if(!amount){
     // 오류처리
     // return Promise.reject('취소 하셨습니다.');
     // 전체
-    amount = sbd;
+    amount = steem_balance;
   }else if(amount.toLowerCase()=='all'){
     // 전체
-    amount = sbd;
+    amount = steem_balance;
   }else if(isNaN(amount)){
     // 오류처리
     return Promise.reject(`x.xxx 형태의 숫자만 입력 가능합니다.`);
   }else if(Number(amount)<=0){
     // 오류처리
     return Promise.reject(`0 이상으로 입력해야 됩니다.`);
-  }else if(Number(amount)>sbd){
+  }else if(Number(amount)>steem_balance){
     // 오류처리
-    return Promise.reject(`입력 값( ${amount} ) 는 잔고( ${sbd} ) 을(를) 초과할 수 없습니다.`);
+    return Promise.reject(`입력 값( ${amount} ) 는 잔고( ${steem_balance} ) 을(를) 초과할 수 없습니다.`);
   }
 
   console.log(`____________________________________________________________`);
-  console.log(` 최고가 : ${(amount/max).toFixed(3)} STEEM 획득`);
-  console.log(` 최근가 : ${(amount/lastest).toFixed(3)} STEEM 획득`);
+  console.log(` 최저가 : ${(amount*min).toFixed(3)} SBD 획득`);
+  console.log(` 최근가 : ${(amount*lastest).toFixed(3)} SBD 획득`);
   console.log(`____________________________________________________________`);
-  console.log(` 1. 최저가 : ${(amount/min).toFixed(3)} STEEM 획득`);
+  console.log(` 1. 최고가 : ${(amount*max).toFixed(3)} SBD 획득`);
   console.log(` 2. 직접입력`);
   console.log(`____________________________________________________________`);
 
@@ -171,10 +175,10 @@ async function buysteem(account, wif, limit){
   [err,type] = await to(question(`교환방식을 선택 바랍니다. ( 1 ~ 2 / 기본값 1 ) : `));
   switch(type){
     case '1':
-      change = (amount/min).toFixed(3);
+      change = (amount*max).toFixed(3);
     break;
     case '2':
-      [err,change] = await to(question(`${amount} SBD 와 교환 할 STEEM 량 (x.xxx) 을 입력바랍니다 : `));
+      [err,change] = await to(question(`${amount} STEEM 와 교환 할 SBD 량 (x.xxx) 을 입력바랍니다 : `));
       if(err){
         // 오류처리
         return Promise.reject(err.toString());
@@ -196,8 +200,8 @@ async function buysteem(account, wif, limit){
   // 입력 정보 재 확인
   let owner = account;                    // 내 계정명 
   let orderid = Number(new Date().getTime().toString().substr(4));     // 거래 취소에 필요한 order id 유니크 해야됨, uint32 : max 4294967295
-  let amount_to_sell = `${Number(amount).toFixed(3)} SBD`;   // 판매 스달량 
-  let min_to_receive = `${Number(change).toFixed(3)} STEEM`; // 구매 스팀량 
+  let amount_to_sell = `${Number(amount).toFixed(3)} STEEM`;   // 판매 스팀량
+  let min_to_receive = `${Number(change).toFixed(3)} SBD`; // 구매 스달량 
   let fill_or_kill = false;               // ???
   let expiration = getNowCHour(9).toISOString().substr(0,19); // 거래 만료 시간 설정 - 기본 9시간 뒤
   console.log(`____________________________________________________________`);
@@ -286,8 +290,8 @@ module.exports = (args)=>{
 	let activekey = args[1];	// 엑티브키 
 	let limit = args[2];			// hidden params - default : 10
 
-	// 스팀 구매를 진행한다
-	buysteem(author, activekey, limit).catch(e=>{
+	// 스달 구매를 진행한다
+	buysbd(author, activekey, limit).catch(e=>{
 		console.log(`____________________________________________________________`);
 		console.error(e);
 		console.log(`____________________________________________________________`);

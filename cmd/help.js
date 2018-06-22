@@ -3,6 +3,9 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    buysteem / bm  ........... 내부거래소에서 SBD 로 STEEM 을 구매
+    buysbd / bd  ............. 내부거래소에서 STEEM 으로 SBD 를 구매
+    buyscancel / bl  ......... 내부거래소에 등록된 목록 확인 및 취소
     resteem / re  ........... 입력받은 주소 정보를 리스팀(리블로그) 한다. 7일이 지난 경우에도 가능
     taglive / tl  ........... 입력받은 태그의 실시간 피드정보를 확인할 수 있다. 10초 단위 목록 정보 갱신
     powerup / pw  ........... 내 계정의 스팀을 스팀파워로 전환한다(몽땅 한번에 전환함에 유의!)
@@ -24,6 +27,41 @@ const menus = {
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
   `,
 
+  buycancel: `
+    $ steemkr buysbd <STEEM_RESTEEM_AUTHOR> <STEEM_KEY_ACTIVE>
+
+      * 내부거래소에 등록한 목록을 확인 / 취소 할 수 있다.
+
+    $ steemkr buycancel
+    $ steemkr buycancel 계정명 엑티브키
+    $ steemkr bl
+    $ steemkr bl 계정명 엑티브키
+  `,
+
+  buysbd: `
+    $ steemkr buysbd <STEEM_RESTEEM_AUTHOR> <STEEM_KEY_ACTIVE> <STEEM_ORDER_LIMIT-option>
+
+      * STEEM 로 SBD 구매를 진행한다
+      * STEEM 가 0 이상 있는 경우에만 진행 가능함
+
+    $ steemkr buysbd
+    $ steemkr buysbd 계정명 엑티브키
+    $ steemkr bd
+    $ steemkr bd 계정명 엑티브키
+  `,
+
+  buysteem: `
+    $ steemkr buysteem <STEEM_RESTEEM_AUTHOR> <STEEM_KEY_ACTIVE> <STEEM_ORDER_LIMIT-option>
+
+      * SBD 로 STEEM 구매를 진행한다
+      * SBD 가 0 이상 있는 경우에만 진행 가능함
+
+    $ steemkr buysteem
+    $ steemkr buysteem 계정명 엑티브키
+    $ steemkr bm
+    $ steemkr bm 계정명 엑티브키
+  `,
+
   resteem: `
     $ steemkr resteem [REBLOG_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>
 
@@ -32,31 +70,33 @@ const menus = {
       * <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING> 를 별도로 입력 받으므로 부계정이 있는 경우 수월하게 리스팀을 수행할 수 있다.
       * payout(7일)이 지난 컨텐츠 또한 리블로깅이 가능
 
-    $ steemkr resteem https://steemit.com/kr/@wonsama/kr-dev-krob 
-      ... 설정값(STEEM_RESTEEM_AUTHOR, STEEM_RESTEEM_KEY_POSTING) 정보를 기준으로 리블로깅을 한다
-      
-    $ steemkr re https://steemit.com/kr/@wonsama/kr-dev-krob wonsama 5J1234abcd123h801eh123rf 
-      ... 입력받은 주소를 wonsama 계정으로 리블로깅 한다.
+    $ steemkr resteem 스팀잇주소
+    $ steemkr resteem 스팀잇주소 계정명 포스팅키
+    $ steemkr re 스팀잇주소
+    $ steemkr re 스팀잇주소 계정명 포스팅키
   `,
 
   taglive: `
     $ steemkr taglive <STEEM_TAG-default:kr>
 
-      * <STEEM_TAG> 입력받은 태그의 실시간 피드정보를 확인
+      * 입력받은 태그의 실시간 피드정보를 확인
+      * 태그 미 기입 시 기본값 kr
 
-    $ steemkr taglive ....................... 환경변수에 설정된 STEEM_TAG 값을 기준으로 없는 경우 기본값 kr 로 조회
-    $ steemkr taglive kr .................... kr 태그의 실시간 컨텐츠 정보를 로드한다
-    $ steemkr tl kr ......................... kr 태그의 실시간 컨텐츠 정보를 로드한다
+    $ steemkr taglive
+    $ steemkr taglive kr
+    $ steemkr tl
+    $ steemkr tl kr
   `,
 
   block: `
     $ steemkr block <STEEM_AUTHOR>
 
-      * <STEEM_AUTHOR> 기준으로 해당 아이디를 차단한 목록 정보를 확인할 수 있다.
+      * 해당 아이디를 차단한 목록 정보를 확인할 수 있다.
 
-    $ steemkr block ....................... 환경변수에 설정된 STEEM_AUTHOR 값을 기준으로 조회
-    $ steemkr block wonsama ............... wonsama 를 블록한 아이디 목록 정보를 보여준다
-    $ steemkr bl wonsama .................. wonsama 를 블록한 아이디 목록 정보를 보여준다
+    $ steemkr block
+    $ steemkr block 계정명
+    $ steemkr bl
+    $ steemkr bl 계정명
   `,
 
   feed: `    
@@ -65,9 +105,10 @@ const menus = {
       * <STEEM_AUTHOR> 기준으로 피드 목록을 실시간으로 조회한다
       * 10초 단위로 자동 갱신된 피드 정보를 표시한다
 
-    $ steemkr feed ....................... 환경변수에 설정된 STEEM_AUTHOR 값을 기준으로 조회
-    $ steemkr feed wonsama ............... wonsama 의 피드 정보를 보여준다.
-    $ steemkr fd wonsama ................. wonsama 의 피드 정보를 보여준다.
+    $ steemkr feed
+    $ steemkr feed 계정명
+    $ steemkr fd
+    $ steemkr fd 계정명
   `,
 
   price: `
@@ -76,18 +117,22 @@ const menus = {
       * UPBIT 기준 오늘의 스팀 가격 정보를 chart를 통해 보여준다.
       * <STEEM_PRICE_COIN> 에는 UPBIT 원화마켓에서 제공하는 코인 타입을 넣을 수 있다.
 
-    $ steemkr price ..................... 환경변수에 설정된 <STEEM_PRICE_COIN> 값을 기준으로 조회
-    $ steemkr price STEEM ............... 스팀 가격을 조회한다
-    $ steemkr pr EOS .................... 이오스 가격을 조회한다 
+    $ steemkr price
+    $ steemkr price STEEM
+    $ steemkr pr
+    $ steemkr pr EOS
   `,
   slb: `
     $ steemkr slb <STEEM_AUTHOR> <STEEM_SLB_DAY-option,default:7>
 
       * <STEEM_AUTHOR> 입력받은 계정 및 <STEEM_SLB_DAY> 기준 스팀잇 라이프 벨런스를 보여준다.(글 작성 시간대)
 
-    $ steemkr slb ................... 환경변수에 설정된 STEEM_AUTHOR 값을 기준으로 조회
-    $ steemkr slb wonsama 30 ........ wonsama 의 30일간 스라벨 정보를 보여준다.
-    $ steemkr sl wonsama 7 .......... wonsama 의 7일간 스라벨 정보를 보여준다.
+    $ steemkr slb
+    $ steemkr slb 계정명
+    $ steemkr slb 계정명 조회기간
+    $ steemkr sl
+    $ steemkr sl 계정명
+    $ steemkr sl 계정명 조회기간
   `,
   accounts: `
     $ steemkr accounts <STEEM_AUTHOR> <STEEM_KEY_POSTING-option>
@@ -95,9 +140,12 @@ const menus = {
       * <STEEM_AUTHOR> 기준으로 정보를 조회한다
       * 환경 변수에 <STEEM_KEY_POSTING> 값이 설정되어 있는 경우 자동으로 reward를 청구한다
 
-    $ steemkr accounts ................... 환경변수에 설정된 STEEM_AUTHOR 값을 기준으로 조회
-    $ steemkr accounts wonsama ........... wonsama 의 계정 정보를 보여준다.
-    $ steemkr ac wonsama ................. wonsama 의 계정 정보를 보여준다.
+    $ steemkr accounts
+    $ steemkr accounts 계정명
+    $ steemkr accounts 계정명 포스팅키
+    $ steemkr ac
+    $ steemkr ac 계정명
+    $ steemkr ac 계정명 포스팅키
   `,
 }
 
