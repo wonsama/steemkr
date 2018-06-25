@@ -23,7 +23,8 @@ function analysis(result){
 		profile = JSON.parse(result.json_metadata);
 		profile=profile?profile.profile:undefined;
 	}catch(e){}
-	let profile_image = profile?profile.profile_image:undefined;
+	// let profile_image = profile?profile.profile_image:undefined;
+	let profile_image = `https://steemitimages.com/u/${result.name}/avatar`;
 	let profile_name = profile?profile.name:undefined;
 	let profile_about = profile?profile.about:undefined;
 	let profile_location = profile?profile.location:undefined;

@@ -1,3 +1,7 @@
+#### 0.6.3
+
+* account : 프로필사진 경로 수정
+
 #### 0.6.2
 
 * slb : 버그수정 ( special thank you for stylegold )
