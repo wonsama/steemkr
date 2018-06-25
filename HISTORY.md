@@ -1,3 +1,14 @@
+#### 0.6.1
+
+* 설명 등 마이너 추가
+
+#### 0.6.0
+
+* buysteem, buysbd, buycancel
+  * buysteem : 내부거래소에서 SBD 로 STEEM 구매처리
+  * buysbd : 내부거래소에서 STEEM 으로 SBD 구매처리
+  * buycancel : 주문목록 확인 및 취소
+
 #### 0.5.2
 
 * 작업진행중

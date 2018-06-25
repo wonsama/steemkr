@@ -19,7 +19,7 @@ module.exports = () => {
 		case 'buysbd':
 			require('./cmd/buysbd')(params);
 		break;
-		case 'bl':
+		case 'bc':
 		case 'buycancel':
 			require('./cmd/buycancel')(params);
 		break;

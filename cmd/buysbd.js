@@ -193,7 +193,7 @@ async function buysbd(account, wif, limit){
     default:
       // 오류처리
       // return Promise.reject('취소 하셨습니다.');
-      change = (amount/min).toFixed(3);
+      change = (amount*max).toFixed(3);
     break;
   }
 

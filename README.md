@@ -2,10 +2,17 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysteem.png)
+<center>[ 그림 : 내부거래소를 통한 SBD -> STEEM 구매 ]</center>
+
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysbd.png)
+<center>[ 그림 : 내부거래소를 통한 STEEM -> SBD 구매 ]</center>
+
+![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buycancel.png)
+<center>[ 그림 : 내부거래소 거래목록 조회 및 취소 ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_resteem.png)
 <center>[ 그림 : 리스팀, 7일(payout)이 지난 글 또한 가능 ]</center>
-
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_taglive.png)
 <center>[ 그림 : 태그라이브, 태그기준 피드정보를 실시간으로 확인할 수 있다 ]</center>
@@ -44,10 +51,13 @@
 
 #### 신규
 
-* 리스팀(re) : `$ steemkr resteem [RESTEEM_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
+* 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 스달구매(bd) : `$ steemkr buysbd <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 구매확인취소(bc) : `$ steemkr buycancel <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 
 #### 기존
 
+* 리스팀(re) : `$ steemkr resteem [RESTEEM_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
 * 태그라이브(tl) : `$ steemkr taglive <STEEM_TAG>`
 * 스파업(pw) : `$ steemkr powerup <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 차단목록(bl) : `$ steemkr block <STEEM_AUTHOR>`
@@ -61,21 +71,22 @@
 > 코인타입은 upbit에서 원화마켓에 존재하는 모든 것을 사용할 수 있습니다. (18.06.01일 기준)
 > 계정정보에서 포스팅키 입력 시 자동으로 보상(reward)를 청구합니다
 
-#### 환경변수
+# 환경변수
 
 * 설정하는 경우 값을 입력하지 않아도 매칭되는 값이 자동으로 입력 됩니다.
 * STEEM_KEY_ACTIVE 를 사용하는 명령어는 꼭 __확인 후 사용__ 하기 바랍니다.
 * 설정방법 : 네이버/구글에서 `환경변수 설정방법` 으로 검색하여 확인 바랍니다.
 
-#### 설정 가능한 환경변수 종류
+# 설정 가능한 환경변수 종류
 
-(new)
+#### 신규
+
+* N/A
+
+#### 기존
 
 * STEEM_RESTEEM_AUTHOR 리스팀 작가(유저명) 정보가 자동으로 입력됩니다.
 * STEEM_RESTEEM_KEY_POSTING 값을 설정하는 경우 리스팀 작가(유저) 포스팅 키값이 자동으로 입력됩니다.
-
-(old)
-
 * STEEM_AUTHOR 작가(유저명) 정보가 자동으로 입력됩니다.
 * STEEM_KEY_POSTING 값을 설정하는 경우 포스팅 키값이 자동으로 입력됩니다.
 * STEEM_KEY_ACTIVE 값을 설정하는 경우 엑티브 키값이 자동으로 입력됩니다.
@@ -99,12 +110,12 @@
 
 # 최근 업데이트 이력
 
-#### 0.5.0
+#### 0.6.0
 
-* resteem
-  * 7일이 지난 글또한 리스팀 가능
-  * 설정값(STEEM_RESTEEM_AUTHOR, STEEM_RESTEEM_KEY_POSTING)을 지정하면 내계정 또는 타계정으로(부계정) 리스팀 가능
-* 입력 파라미터 점검로직 수정
+* buysteem, buysbd, buycancel
+  * buysteem : 내부거래소에서 SBD 로 STEEM 구매처리
+  * buysbd : 내부거래소에서 STEEM 으로 SBD 구매처리
+  * buycancel : 주문목록 확인 및 취소
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
@@ -117,4 +128,4 @@
 
 # 맺음말
 
-* 리스팀 7일 지나도 가능하네요 -_-; 그런데 왜 스팀잇에는 버튼이 없어질까 ? 흠...
+* 내부거래소를 최저가 또는 최고가로 빠르게 구매 처리를 할 수 있도록 구현 ! (물론 원하는 가격으로 설정가능)
