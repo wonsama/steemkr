@@ -1,5 +1,6 @@
 const {getBeforeDate} = require ('../util/wdate');
 const {getLocalTime} = require ('../util/wdate');
+const help = require('../cmd/help');
 
 const steem = require('steem');
 const dateFormat = require('dateformat');
@@ -183,7 +184,7 @@ function drawChart(command, results){
 function initParams(args)
 {
 	// 초기화
-	args = args?[]:args;	// new 처리 하므로 return 처리 해야 됨에 유의
+	args = args?args:[];	// new 처리 하므로 return 처리 해야 됨에 유의
 
 	// 1번째 : 작가
 	if(args.length==0){
@@ -208,7 +209,7 @@ function initParams(args)
 module.exports = (args)=>{
 
 	// 파라미터 초기화
-	initParams(args);
+	args = initParams(args);
 
 	// 입력 파라미터 유효성 검증 
 	if(args.length!=2){

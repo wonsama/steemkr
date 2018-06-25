@@ -1,3 +1,7 @@
+#### 0.6.2
+
+* slb : 버그수정 ( special thank you for stylegold )
+
 #### 0.6.1
 
 * 설명 등 마이너 추가
