@@ -1,3 +1,15 @@
+#### 0.7.0
+
+* convert : 3.5일 후 sbd => steem 을 시세 평균가로 교환
+* accounts : 소스코드 정리 / 임대, 임차 정보 추가됨
+
+#### 0.6.4
+
+* convert : (테스트 중) 신규 추가 - 3.5일 후 sbd => steem 을 시세 평균가로 교환
+* initParams 공통적으로 추가 / interface 형태로 
+* accounts 에 delegate 정보가 있는 경우 상세 정보를 보여주도록 함
+* accounts 소스코드 정리 / 임대, 임차 정보 추가됨
+
 #### 0.6.3
 
 * account : 프로필사진 경로 수정

@@ -81,7 +81,6 @@ module.exports = (args) => {
   let mlink = args[0];
   let macc = args[1];
   let maccPostingKey = args[2];
-
   let spinner = ora().start('resteem 진행 중 입니다');
 
   resteem(mlink, macc, maccPostingKey)

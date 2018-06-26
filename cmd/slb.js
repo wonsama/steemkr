@@ -1,6 +1,6 @@
+const help = require('./help');
 const {getBeforeDate} = require ('../util/wdate');
 const {getLocalTime} = require ('../util/wdate');
-const help = require('../cmd/help');
 
 const steem = require('steem');
 const dateFormat = require('dateformat');

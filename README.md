@@ -2,28 +2,32 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysteem.png)
+
+![ss_convert.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_convert.png)
+<center>[ 그림 : 내부거래소의 3.5일간 평단가 기준으로 SBD -> STEEM 변환 ]</center>
+
+![ss_buysteem.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysteem.png)
 <center>[ 그림 : 내부거래소를 통한 SBD -> STEEM 구매 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysbd.png)
+![ss_buysbd.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buysbd.png)
 <center>[ 그림 : 내부거래소를 통한 STEEM -> SBD 구매 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buycancel.png)
+![ss_buycancel.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_buycancel.png)
 <center>[ 그림 : 내부거래소 거래목록 조회 및 취소 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_resteem.png)
+![ss_resteem.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_resteem.png)
 <center>[ 그림 : 리스팀, 7일(payout)이 지난 글 또한 가능 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_taglive.png)
+![ss_taglive.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_taglive.png)
 <center>[ 그림 : 태그라이브, 태그기준 피드정보를 실시간으로 확인할 수 있다 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_powerup.png)
+![ss_powerup.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_powerup.png)
 <center>[ 그림 : 스파업, 손쉽게 스파업을 할 수 있다 ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_block.png)
+![ss_block.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_block.png)
 <center>[ 그림 : 차단목록 (날 차단한 사람을 확인할 수 있다) ]</center>
 
-![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_feed.png)
+![ss_feed.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_feed.png)
 <center>[ 그림 : 피드보기 (내계정 포함 다른 계정의 피드 실시간으로 확인할 수 있다) ]</center>
 
 ![ss_slb.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_slb.png)
@@ -51,12 +55,13 @@
 
 #### 신규
 
-* 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
-* 스달구매(bd) : `$ steemkr buysbd <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
-* 구매확인취소(bc) : `$ steemkr buycancel <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 
 #### 기존
 
+* 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 스달구매(bd) : `$ steemkr buysbd <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 구매확인취소(bc) : `$ steemkr buycancel <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 리스팀(re) : `$ steemkr resteem [RESTEEM_URL] <STEEM_RESTEEM_AUTHOR> <STEEM_RESTEEM_KEY_POSTING>`
 * 태그라이브(tl) : `$ steemkr taglive <STEEM_TAG>`
 * 스파업(pw) : `$ steemkr powerup <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
@@ -110,12 +115,10 @@
 
 # 최근 업데이트 이력
 
-#### 0.6.0
+#### 0.7.0
 
-* buysteem, buysbd, buycancel
-  * buysteem : 내부거래소에서 SBD 로 STEEM 구매처리
-  * buysbd : 내부거래소에서 STEEM 으로 SBD 구매처리
-  * buycancel : 주문목록 확인 및 취소
+* convert : 3.5일 후 sbd => steem 을 시세 평균가로 교환
+* accounts : 소스코드 정리 / 임대, 임차 정보 추가됨
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵

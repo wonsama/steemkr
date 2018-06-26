@@ -1,8 +1,11 @@
+const help = require('./help');
+
 const steem = require('steem');
 const axios = require('axios');
 const asciichart = require ('asciichart');
 const ora = require('ora');
 
+const DEFAULT_PRICE_COIN = 'STEEM';
 const STEEM_PRICE_COIN = process.env.STEEM_PRICE_COIN;
 
 /**
@@ -76,19 +79,38 @@ function getCoin(args){
 	return DEF_COIN;
 }
 
+/*
+* 파라미터 정보를 초기화 해준다
+* @param args 외부로부터 입력받은 파라미터 
+*/
+function initParams(args)
+{
+	// 초기화
+	args = args?args:[];	// new 처리 하므로 return 처리 해야 됨에 유의
+
+	// 1번째 : 작가
+	if(args.length==0){
+		args = [];
+		if(STEEM_PRICE_COIN){
+			args.push(STEEM_PRICE_COIN);
+		}else{
+			args.push(DEFAULT_PRICE_COIN);
+		}
+	}
+
+	return args;
+}
+
 module.exports = (args)=>{
 	
+	// 파라미터 초기화
+	args = initParams(args);
+
 	// 입력 파라미터 유효성 검증 
-	if(!args || args.length==0){
-		// 기본 값 존재여부 확인
-		if(STEEM_PRICE_COIN){
-			args = []; args.push(STEEM_PRICE_COIN);
-		}
-		// else{
-		// 	console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-		// 	help('price');
-		// 	return;	
-		// }
+	if(args.length!=1){
+		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
+		help('price');
+		return;	
 	}
 
 	const MARKET = 'KRW';	// 일단 원화 마켓만
