@@ -133,6 +133,10 @@ function initParams(args)
 let spinner;
 async function processAsyc(account, wif){
 
+	const AXIOS_CONFIG = {
+		  headers: {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
+		};
+
 	// 오류처리용
   let err;
 
@@ -177,13 +181,36 @@ async function processAsyc(account, wif){
 		console.log(``);
 	}
 
+	// 팔로워 정보 확인 -*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
+	let FOLLOW_API_URL = `https://steemdb.com/api/accounts?account=${account}`;
+	let followers;
+	spinner = ora().start('loading followers info');
+	[err, followers] = await to(axios.get(FOLLOW_API_URL, AXIOS_CONFIG));
+	if(err){
+    // 오류처리
+    spinner.fail();
+    return Promise.reject(err.toString());
+  }else if(!followers.data){
+  	// 오류처리
+    spinner.fail();
+    return Promise.reject('팔로워 정보를 확인할 수 없습니다.');
+  }
+  spinner.succeed(' ');
+
+  // 팔로워 정보 출력
+  // mvest = 1 Million Vests
+  // busy의 보팅을 받기 위해선 25 billion (250억) vest가 필요
+  let finfo = followers.data[0];
+	console.log('===== 팔로워 (followers) =====\n');
+	console.log(`팔로잉 : ${finfo.following_count} 명`);
+	console.log(`팔로워 : ${finfo.followers_count} 명`);
+	console.log(`팔로워 MVEST : ${finfo.followers_mvest.toLocaleString()}`);
+  console.log(`( DB스냅샷(steemdb.com) 기준이라 약간차이가 있을 수 있음 )`);
+  console.log(``);
+
 	// 스파 임차정보 확인 -*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
 	if(getMoney(acc.received_vesting_shares)>0){
-		const AXIOS_CONFIG = {
-		  headers: {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36'}
-		};
 
-		// let account = 'ravenkim';
 		let DELEGATORS_API_URL = `https://happyukgo.com/api/steemit/delegators/?id=${account}&hash=3535ffa23344c25d2dcdc991fbdb60a5&_=`+new Date().getTime();
 		let delegators;
 		spinner = ora().start('loading delegator');

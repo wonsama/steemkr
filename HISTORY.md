@@ -1,3 +1,7 @@
+#### 0.8.1
+
+* accounts : follower 정보 추가됨 / busy.org에서 mvest 확인 땜시 (25billion)
+
 #### 0.8.0
 
 * voteto : 보팅이력 정보를 조회할 수 있습니다.

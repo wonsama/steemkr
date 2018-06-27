@@ -1,6 +1,6 @@
 {
   "name": "steemkr",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "스팀잇 기반 CLI 툴 : CLI(Command Line Interface) Tool for steemit.",
   "main": "index.js",
   "homepage": "https://steemit.com/@wonsama",
