@@ -2,6 +2,8 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_voteto.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_voteto.png)
+<center>[ 그림 : 최근 N일간 보팅 이력 조회 ]</center>
 
 ![ss_convert.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_convert.png)
 <center>[ 그림 : 내부거래소의 3.5일간 평단가 기준으로 SBD -> STEEM 변환 ]</center>
@@ -55,10 +57,11 @@
 
 #### 신규
 
-* 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
 
 #### 기존
 
+* 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 스달구매(bd) : `$ steemkr buysbd <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 구매확인취소(bc) : `$ steemkr buycancel <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
@@ -79,14 +82,14 @@
 # 환경변수
 
 * 설정하는 경우 값을 입력하지 않아도 매칭되는 값이 자동으로 입력 됩니다.
-* STEEM_KEY_ACTIVE 를 사용하는 명령어는 꼭 __확인 후 사용__ 하기 바랍니다.
+* STEEM_KEY_POSTING, STEEM_KEY_ACTIVE 를 사용하는 명령어는 꼭 __확인 후 사용__ 하기 바랍니다.
 * 설정방법 : 네이버/구글에서 `환경변수 설정방법` 으로 검색하여 확인 바랍니다.
 
 # 설정 가능한 환경변수 종류
 
 #### 신규
 
-* N/A
+* STEEM_VOTE_DAY 값을 설정하는 경우 보팅조회(voteto) 기본 조회일자가 자동으로 입력됩니다.
 
 #### 기존
 
@@ -96,7 +99,7 @@
 * STEEM_KEY_POSTING 값을 설정하는 경우 포스팅 키값이 자동으로 입력됩니다.
 * STEEM_KEY_ACTIVE 값을 설정하는 경우 엑티브 키값이 자동으로 입력됩니다.
 * STEEM_PRICE_COIN 값을 설정하는 경우 코인타입이 자동으로 입력됩니다.
-* STEEM_SLB_DAY 값을 설정하는 경우 스라벨 기본 조회일자가 자동으로 입력됩니다.
+* STEEM_SLB_DAY 값을 설정하는 경우 스라벨(slb) 기본 조회일자가 자동으로 입력됩니다.
 * STEEM_TAG 값을 설정하는 경우 태그 값이 자동으로 입력됩니다. 
 
 # 소스
@@ -115,10 +118,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.7.0
+#### 0.8.0
 
-* convert : 3.5일 후 sbd => steem 을 시세 평균가로 교환
-* accounts : 소스코드 정리 / 임대, 임차 정보 추가됨
+* voteto : 보팅이력 정보를 조회할 수 있습니다.
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
@@ -131,4 +133,12 @@
 
 # 맺음말
 
-* 내부거래소를 최저가 또는 최고가로 빠르게 구매 처리를 할 수 있도록 구현 ! (물론 원하는 가격으로 설정가능)
+* voteto는 7일 이상으로 조회시 시간이 매우 많이 소요됨을 미리 알려드립니다.
+
+---
+
+<div class='text-right'>
+<strong>이전 관련 글은 #w-dev 태그를 통해 확인하실 수 있습니다. </strong>
+<br>
+<strong>오늘도 행복한 하루 되세요 from @wonsama</strong>
+</div>

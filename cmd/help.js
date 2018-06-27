@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    voteto / vo  ............. 최근 N일간 보팅 이력 조회
     convert / ct  ............ 내부거래소 평균 시세로 SBD 로 STEEM 을 3.5 일 후 교환 / 취소 불가
     buysteem / bm  ........... 내부거래소에서 SBD 로 STEEM 을 구매
     buysbd / bd  ............. 내부거래소에서 STEEM 으로 SBD 를 구매
@@ -22,6 +23,19 @@ const menus = {
     
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
+  `,
+
+  voteto: `
+    $ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>
+
+      * 최근 N일간 보팅 이력 조회
+
+    $ steemkr voteto
+    $ steemkr voteto 계정명
+    $ steemkr voteto 계정명 조회일
+    $ steemkr vo
+    $ steemkr vo 계정명
+    $ steemkr vo 계정명 조회일
   `,
 
   convert: `

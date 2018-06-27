@@ -15,6 +15,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'vo':
+		case 'voteto':
+			require('./cmd/voteto')(params);
+		break;
 		case 'ct':
 		case 'convert':
 			require('./cmd/convert')(params);

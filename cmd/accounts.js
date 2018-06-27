@@ -49,7 +49,7 @@ function analysis(acc, total_vesting_shares, total_vesting_fund_steem){
   delegated_vesting_shares = Math.round(delegated_vesting_shares);  
 
   let reward_sp = steem.formatter.vestToSteem(getMoney(acc.reward_vesting_balance), total_vesting_shares, total_vesting_fund_steem);
-  reward_sp = reward_sp.toPrecision(4);
+  reward_sp = reward_sp.toFixed(3);
 
 	return [
 		{
