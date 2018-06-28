@@ -1,3 +1,7 @@
+#### 0.8.2
+
+* history : (테스트 중)
+
 #### 0.8.1
 
 * accounts : follower 정보 추가됨 / busy.org에서 mvest 확인 땜시 (25billion)
