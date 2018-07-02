@@ -2,6 +2,9 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_history.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_history.png)
+<center>[ 그림 : 글의 수정이력 및 정보확인 ]</center>
+
 ![ss_voteto.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_voteto.png)
 <center>[ 그림 : 최근 N일간 보팅 이력 조회 ]</center>
 
@@ -57,10 +60,11 @@
 
 #### 신규
 
-* 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
+* 수정이력조회(hi) : `$ steemkr history <URL>`
 
 #### 기존
 
+* 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
 * 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 스달구매(bd) : `$ steemkr buysbd <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
@@ -89,10 +93,11 @@
 
 #### 신규
 
-* STEEM_VOTE_DAY 값을 설정하는 경우 보팅조회(voteto) 기본 조회일자가 자동으로 입력됩니다.
+* N/A
 
 #### 기존
 
+* STEEM_VOTE_DAY 값을 설정하는 경우 보팅조회(voteto) 기본 조회일자가 자동으로 입력됩니다.
 * STEEM_RESTEEM_AUTHOR 리스팀 작가(유저명) 정보가 자동으로 입력됩니다.
 * STEEM_RESTEEM_KEY_POSTING 값을 설정하는 경우 리스팀 작가(유저) 포스팅 키값이 자동으로 입력됩니다.
 * STEEM_AUTHOR 작가(유저명) 정보가 자동으로 입력됩니다.
@@ -118,9 +123,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.8.0
+#### 0.9.0
 
-* voteto : 보팅이력 정보를 조회할 수 있습니다.
+* history : 입력받은 해당 글 주소의 정보 및 수정 이력을 확인할 수 있습니다.
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
@@ -133,7 +138,7 @@
 
 # 맺음말
 
-* voteto는 7일 이상으로 조회시 시간이 매우 많이 소요됨을 미리 알려드립니다.
+* 블록체인의 장점이자 단점인 모든 이력을 조회 할 수 있는 history.
 
 ---
 

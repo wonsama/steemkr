@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    history / hi  ............ 글의 수정 이력 및 정보 확인
     voteto / vo  ............. 최근 N일간 보팅 이력 조회
     convert / ct  ............ 내부거래소 평균 시세로 SBD 로 STEEM 을 3.5 일 후 교환 / 취소 불가
     buysteem / bm  ........... 내부거래소에서 SBD 로 STEEM 을 구매
@@ -23,6 +24,17 @@ const menus = {
     
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
+  `,
+
+  history: `
+    $ steemkr history <URL>
+
+      * 글의 수정 이력 및 정보 확인
+
+    $ steemkr history 글주소
+    $ steemkr hi 글주소
+
+    sample) steemkr history https://steemit.com/kr/@wonsama/steemitlove-hf20
   `,
 
   voteto: `
