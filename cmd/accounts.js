@@ -62,7 +62,7 @@ function analysis(acc, total_vesting_shares, total_vesting_fund_steem){
 				{val : profile_name, en : 'name', kr : '닉네임'},
 				{val : profile_about, en : 'about', kr : '정보'},
 				{val : profile_location, en : 'location', kr : '사는곳'},
-				{val : dateFormat(getLocalTime(acc.created), 'yyyy-mm-dd HH:MM:ss'), en : 'location', kr : '계정생성일'},
+				{val : dateFormat(getLocalTime(acc.created), 'yyyy-mm-dd HH:MM:ss'), en : 'created', kr : '계정생성일'},
 				
 			]
 		},
