@@ -1,9 +1,20 @@
 const minimist = require('minimist');	// 외부 파라미터를 자동으로 파싱하여 분류해준다.
 const help = require('./cmd/help');
 const error = require('./util/error');
+const steem = require('steem');
 
 // 환경 변수값을 로딩한다 
 require("dotenv").config();
+
+// 노드 변경 참조
+// https://geo.steem.pl/
+// http://steemistry.com/nodes/ 
+// steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
+// steem.api.setOptions({ url: 'https://api.steem.house' });
+// steem.api.setOptions({ url: 'https://api.steemit.com' });
+ 
+
+// wss://rpc.dist.one/
 
 module.exports = () => {
 	const args = minimist(process.argv.slice(2));

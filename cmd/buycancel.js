@@ -1,3 +1,5 @@
+const help = require('./help');
+
 const {getLocalTime} = require('../util/wdate');
 const {question} = require('../util/wutil');
 const {to} = require('../util/wutil');

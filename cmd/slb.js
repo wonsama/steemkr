@@ -61,10 +61,13 @@ async function loadSLB(account, day=7, ninfos=[], from=Number.MAX_SAFE_INTEGER, 
 	let spinner = ora().start('read histoy');
 
 	let results = await steem.api.getAccountHistoryAsync(account, from, limit);
+	// console.log(account, from, limit);
 	let timeEnd = new Date();
 	let timeGap = Math.floor((timeEnd.getTime() - timeStart.getTime()) / 1000);
 	let infos = [];
+	// console.log('results', results);
 	let idxStart = results[0][0];	// low(옛날)
+	
 	let idxEnd = results[results.length-1][0];	// high(최신)
 
 	spinner.succeed(`read histoy : ${idxStart} ~ ${idxEnd} ( elapsed time : ${timeGap} sec )`);
