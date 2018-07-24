@@ -2,6 +2,9 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_create.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_create.png)
+<center>[ 그림 : 계정생성 ]</center>
+
 ![ss_history.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_history.png)
 <center>[ 그림 : 글의 수정이력 및 정보확인 ]</center>
 
@@ -60,10 +63,11 @@
 
 #### 신규
 
-* 수정이력조회(hi) : `$ steemkr history <URL>`
+* 계정생성(cr) : `$ steemkr create <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 
 #### 기존
 
+* 수정이력조회(hi) : `$ steemkr history <URL>`
 * 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
 * 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 스팀구매(bm) : `$ steemkr buysteem <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
@@ -123,9 +127,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.9.0
+#### 0.10.0
 
-* history : 입력받은 해당 글 주소의 정보 및 수정 이력을 확인할 수 있습니다.
+* create : 계정생성 기능 추가 ( 3 steem 필요 -> 추후 변경 될 수 있음 )
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵

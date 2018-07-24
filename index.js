@@ -26,6 +26,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'cr':
+		case 'create':
+			require('./cmd/create')(params);
+		break;
 		case 'hi':
 		case 'history':
 			require('./cmd/history')(params);
