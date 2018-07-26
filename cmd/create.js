@@ -200,7 +200,7 @@ module.exports = (args)=>{
 	// 입력 파라미터 유효성 검증 
 	if(args.length<2){
 		console.error('\n    [경고] 파라미터 오류  : 아래 메뉴얼을 참조 바랍니다');
-		help('accounts');
+		help('create');
 		return;	
 	}
 

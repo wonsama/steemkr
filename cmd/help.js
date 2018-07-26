@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    votegroup / vg  .......... 보팅 트레인(한번에 부캐 계정모두 보팅하기)
     create / cr  ............. 부계정 생성하기
     history / hi  ............ 글의 수정 이력 및 정보 확인
     voteto / vo  ............. 최근 N일간 보팅 이력 조회
@@ -25,6 +26,16 @@ const menus = {
     
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
+  `,
+
+  votegroup: `
+    $ steemkr votegroup <URL> <VOTE_WEIGHT> <STEEM_AUTHOR> <STEEM_KEY_POSTING> <STEEM_VOTES_LIST>
+
+      * 지정된 보팅목록(STEEM_VOTES_LIST) 기준으로 보팅 트레인(한번에 모든 계정 보팅)을 수행한다
+      * 단, STEEM_VOTES_LIST 에 포함되는 목록은 반드시 모 계정에 POSTING_KEY가 위임 되어 있어야 됨에 유의
+
+    $ steemkr votegroup 주소 보팅무게 계정명 포스팅키 위임계정목록
+    $ steemkr vg 주소 보팅무게 계정명 포스팅키 위임계정목록
   `,
 
   create: `

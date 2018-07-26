@@ -26,6 +26,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'vg':
+		case 'votegroup':
+			require('./cmd/votegroup')(params);
+		break;
 		case 'cr':
 		case 'create':
 			require('./cmd/create')(params);

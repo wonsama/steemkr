@@ -63,10 +63,11 @@
 
 #### 신규
 
-* 계정생성(cr) : `$ steemkr create <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
+* 보팅그룹(vg) : `$ steemkr votegroup <URL> <VOTE_WEIGHT> <STEEM_AUTHOR> <STEEM_KEY_POSTING> <STEEM_VOTES_LIST>`
 
 #### 기존
 
+* 계정생성(cr) : `$ steemkr create <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 수정이력조회(hi) : `$ steemkr history <URL>`
 * 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
 * 컨버트(ct) : `$ steemkr convert <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
@@ -97,7 +98,7 @@
 
 #### 신규
 
-* N/A
+* STEEM_VOTES_LIST 보팅 그룹목록(포스팅키 위임이 된 계정들)이 자동적으로 입력됩니다.(콤마 구분)
 
 #### 기존
 
@@ -127,9 +128,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.10.0
+#### 0.11.0
 
-* create : 계정생성 기능 추가 ( 3 steem 필요 -> 추후 변경 될 수 있음 )
+* votegroup : 보팅 위임을 통해서 보팅그룹으로 보팅하기 ! (보팅트레인)
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
@@ -142,7 +143,7 @@
 
 # 맺음말
 
-* 블록체인의 장점이자 단점인 모든 이력을 조회 할 수 있는 history.
+* 지속적으로 개발하즈아 ~
 
 ---
 
