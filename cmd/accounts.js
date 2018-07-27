@@ -149,7 +149,7 @@ async function processAsyc(account, wif){
     spinner.fail();
     return Promise.reject(err.toString());
   }
-  spinner.succeed(' ');
+  spinner.succeed();
   let total_vesting_shares = getMoney(global.total_vesting_shares);
 	let total_vesting_fund_steem = getMoney(global.total_vesting_fund_steem);
 
@@ -169,7 +169,7 @@ async function processAsyc(account, wif){
     return Promise.reject(err.toString());
   }
   acc = acc[0];
-  spinner.succeed(' ');
+  spinner.succeed();
 
   // 로드된 계정 값 분석 -*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
 	let groups = analysis(acc, total_vesting_shares, total_vesting_fund_steem);
@@ -195,7 +195,7 @@ async function processAsyc(account, wif){
     spinner.fail();
     return Promise.reject('팔로워 정보를 확인할 수 없습니다.');
   }
-  spinner.succeed(' ');
+  spinner.succeed();
 
   // 팔로워 정보 출력
   // mvest = 1 Million Vests
@@ -209,31 +209,31 @@ async function processAsyc(account, wif){
   console.log(``);
 
 	// 스파 임차정보 확인 -*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
-	if(getMoney(acc.received_vesting_shares)>0){
+	// if(getMoney(acc.received_vesting_shares)>0){
 
-		let DELEGATORS_API_URL = `https://happyukgo.com/api/steemit/delegators/?id=${account}&hash=3535ffa23344c25d2dcdc991fbdb60a5&_=`+new Date().getTime();
-		let delegators;
-		spinner = ora().start('loading delegator');
-		[err, delegators] = await to(axios.get(DELEGATORS_API_URL, AXIOS_CONFIG));
-		if(err){
-	    // 오류처리
-	    spinner.fail();
-	    return Promise.reject(err.toString());
-	  }else if(!delegators.data){
-	  	// 오류처리
-	    spinner.fail();
-	    return Promise.reject('임차 정보를 확인할 수 없습니다.');
-	  }
-	  spinner.succeed(' ');
+	// 	let DELEGATORS_API_URL = `https://happyukgo.com/api/steemit/delegators/?id=${account}&hash=3535ffa23344c25d2dcdc991fbdb60a5&_=`+new Date().getTime();
+	// 	let delegators;
+	// 	spinner = ora().start('loading delegator');
+	// 	[err, delegators] = await to(axios.get(DELEGATORS_API_URL, AXIOS_CONFIG));
+	// 	if(err){
+	//     // 오류처리
+	//     spinner.fail();
+	//     return Promise.reject(err.toString());
+	//   }else if(!delegators.data){
+	//   	// 오류처리
+	//     spinner.fail();
+	//     return Promise.reject('임차 정보를 확인할 수 없습니다.');
+	//   }
+	//   spinner.succeed();
 
-		// 임차 스파정보 출력
-	  console.log('===== 임차 (delegators) =====\n');
-	  for(let de of delegators.data){
-	  	let de_sp = de.sp.toFixed(0);
-	  	console.log(`임대받은 아이디 : ${de.delegator}, 날짜 : ${de.time}, 스파 : ${de_sp} SP`);
-	  }
-	  console.log(``);
-	}
+	// 	// 임차 스파정보 출력
+	//   console.log('===== 임차 (delegators) =====\n');
+	//   for(let de of delegators.data){
+	//   	let de_sp = de.sp.toFixed(0);
+	//   	console.log(`임대받은 아이디 : ${de.delegator}, 날짜 : ${de.time}, 스파 : ${de_sp} SP`);
+	//   }
+	//   console.log(``);
+	// }
 
 	// 스파 임대정보 확인 -*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/-*/
 	if(getMoney(acc.delegated_vesting_shares)>0){
@@ -245,7 +245,7 @@ async function processAsyc(account, wif){
 	    spinner.fail();
 	    return Promise.reject(err.toString());
 	  }
-	  spinner.succeed(' ');
+	  spinner.succeed();
 	  
 	  // 임대 스파정보 출력
 	  console.log('===== 임대 (delegatee) =====\n');
@@ -277,7 +277,7 @@ async function processAsyc(account, wif){
 		    spinner.fail();
 		    return Promise.reject(err.toString());
 		  }
-		  spinner.succeed(' ');
+		  spinner.succeed();
     }
 	}
 

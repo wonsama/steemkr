@@ -1,3 +1,8 @@
+#### 0.11.1
+
+* remove delegator info : 링크 깨짐
+* minor bug fix
+
 #### 0.11.0
 
 * votegroup : 보팅 위임을 통해서 보팅그룹으로 보팅하기 ! (보팅트레인)
