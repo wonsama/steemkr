@@ -209,9 +209,6 @@ module.exports = (args)=>{
 
 	processAsyc(account, wif)
 	.then(res=>{
-
-		// return Promise.resolve({account:account, cid:cid, fee:fee, arrPrivateKey:arrPrivateKey });
-
 		// 생성된 계정 정보를 화면에 출력한다
 		console.log(`____________________________________________________________`);
 		console.log(`${res.account} 계정에서 ${res.fee} 를 소모하여 @${res.cid} 계정을 생성하였습니다. ( 계정 잔액 : ${res.remain} STEEM )`);

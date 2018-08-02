@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    scrappost / sp  .......... 스크랩 포스팅 - 입력받은 URL 글을 스크래핑(일부) 후 포스팅
     votegroup / vg  .......... 보팅 트레인(한번에 부캐 계정모두 보팅하기)
     create / cr  ............. 부계정 생성하기
     history / hi  ............ 글의 수정 이력 및 정보 확인
@@ -26,6 +27,18 @@ const menus = {
     
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
+  `,
+
+  scrappost: `
+    $ steemkr scrappost '<URL>' <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>
+
+      * [유의사항] 주소란에 &가 포함되면 콘솔에서는 백그라운드로 동작함(이럴땐 주소를 ''로 감싸주면 됨)
+      * 입력받은 <URL> 정보를 <STEEM_SCRAP_AUTHOR> 계정의 댓글로 기록한다 
+      * 1일 1POST가 되며, 하위 댓글로 연속적으로 기록됨
+      * 현재 가능 : zdnet, medium, lgcns blog ... (추후 지속적 추가 예정)
+
+    $ steemkr scrappost 주소 계정명 포스팅키
+    $ steemkr sp 주소 계정명 포스팅키
   `,
 
   votegroup: `

@@ -6,6 +6,14 @@ const readline = require('readline');
 let fn = {};
 
 /*
+* sleep
+* @param ms time to sleep
+*/
+fn.sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/*
 * top 정보를 추출한다
 * @param source 개체 정보
 * @param count 추출할 갯수

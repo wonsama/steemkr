@@ -26,6 +26,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'sp':
+		case 'scrappost':
+			require('./cmd/scrappost')(params);
+		break;
 		case 'vg':
 		case 'votegroup':
 			require('./cmd/votegroup')(params);
