@@ -12,8 +12,6 @@ require("dotenv").config();
 // steem.api.setOptions({ url: 'https://rpc.buildteam.io' });
 // steem.api.setOptions({ url: 'https://api.steem.house' });
 // steem.api.setOptions({ url: 'https://api.steemit.com' });
- 
-
 // wss://rpc.dist.one/
 
 module.exports = () => {
@@ -103,8 +101,9 @@ module.exports = () => {
 			require('./cmd/version')(params);
 		break;
 		case 'ac':
+		case 'account':
 		case 'accounts':
-			require('./cmd/accounts')(params);
+			require('./cmd/account')(params);
 		break;
 		case undefined:
 			error(`\n    하위 명령어가 존재하지 않습니다. 아래 메뉴얼을 참조 바랍니다.`, false);

@@ -2,6 +2,12 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_votegroup.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_votegroup.png)
+<center>[ 그림 : 보팅그룹 ]</center>
+
+![ss_scrappost.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_scrappost.png)
+<center>[ 그림 : 스크랩 ]</center>
+
 ![ss_create.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_create.png)
 <center>[ 그림 : 계정생성 ]</center>
 
@@ -63,7 +69,10 @@
 
 #### 신규
 
+* 스크랩(sp) : `$ steemkr scrappost <URL> <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>`
 * 보팅그룹(vg) : `$ steemkr votegroup <URL> <VOTE_WEIGHT> <STEEM_AUTHOR> <STEEM_KEY_POSTING> <STEEM_VOTES_LIST>`
+> STEEM_VOTES_LIST 에 해당하는 목록은 모두 POSTING 권한을 위임 받아야 됨에 유의
+> 참조링크 : https://steemit.com/kr/@wonsama/5vgvgt-kr-dev
 
 #### 기존
 
@@ -98,6 +107,8 @@
 
 #### 신규
 
+* STEEM_SCRAP_AUTHOR 스크랩용 계정명 
+* STEEM_SCRAP_KEY_POSTING 스크랩용 계정명 포스팅키
 * STEEM_VOTES_LIST 보팅 그룹목록(포스팅키 위임이 된 계정들)이 자동적으로 입력됩니다.(콤마 구분)
 
 #### 기존
@@ -128,9 +139,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.11.0
+#### 0.12.0
 
-* votegroup : 보팅 위임을 통해서 보팅그룹으로 보팅하기 ! (보팅트레인)
+* scrappost : 링크주소 기반 포스팅, 스크랩을 손쉽게 하기위함.(부캐 개정에 설정하길 권장)
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵

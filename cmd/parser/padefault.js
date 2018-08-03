@@ -15,11 +15,25 @@ let fn = {};
 */
 module.exports = ($, _url, tags, bodyCut, uniqueCut)=>{
 
+  // console.log(_url);
+
+  // charset 때문에 인코딩이 깨지는 경우에 따른 대응
+  // https://blog.datawrapper.de/colorguide :: 독일 사이트 같은데 ... 깨짐
+  // 참조 charset : http://cmiscm.com/data/docs/com/cmiscm/utils/common/Charset.html
+  // var response = await axios.get(query.url, { responseType: 'arraybuffer' });
+  // var ctype: string = response.headers["content-type"];
+  // if (ctype.includes("charset=GB2312"))
+  // var data = iconv.decode(response.data, 'gb2312');
+  // else
+  // data = iconv.decode(response.data, 'utf-8');
+
 	// 기본적으로 open graph 에서 정보를 가져온다 
   let title = $(`meta[property='og:title']`).attr('content'); // open graph
   let body = $(`meta[property='og:description']`).attr('content'); // open graph
   let image = $(`meta[property='og:image']`).attr('content'); // open graph
   let url = $(`meta[property='og:url']`).attr('content'); // open graph
+
+  // console.log('title', title);
 
   if(!title&&!body&&!image&&!url){
     // steemit 은 property 가 아니라 name 으로 되어 있음 -_-;

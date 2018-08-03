@@ -2,6 +2,7 @@ const help = require('./help');
 const {removeSpace2} = require('../util/wstring');
 const {to} = require('../util/wutil');
 const {sleep} = require('../util/wutil');
+const {getHostAddr} = require('../util/wstring');
 
 const steem = require('steem');
 const ora = require('ora');
@@ -13,6 +14,7 @@ const dateFormat = require('dateformat');
 const padefault = require('./parser/padefault');
 const pazdnet = require('./parser/pazdnet');
 const painfoq = require('./parser/painfoq');
+
 
 // 일단 기본 파서로 동작하지 않는 것만 처리하는 방향으로 ^^
 // 본문 전체를 추출하는 것이 아니기 때문인지라 ...
@@ -113,8 +115,6 @@ async function processAsyc(link, account, wif){
   // frameset을 사용하여 link 정보를 변경할 필요가 있는 경우 처리 
   link = updateLink(link);
 
-
-
   // 파싱 수행
   // permlink에는 .이 포함되면 안됨에 유의하기 바랍니다.
   let context;
@@ -122,6 +122,9 @@ async function processAsyc(link, account, wif){
     [err, linkInfo] = await to(axios.request(link, AXIOS_CONFIG));
 
     if(!err){
+
+      // console.log(linkInfo.data);
+
       $ = cheerio.load(linkInfo.data);
       spinner.succeed();
       context = parser($, link, DEFAULT_TAG, DEFAULT_BODY_LEN, DEFAULT_UNIQUE_LEN);
@@ -254,6 +257,7 @@ async function processAsyc(link, account, wif){
     body.push(`<img src='${image}' />`);
     body.push(`#### [${context.title}](${context.url})`);
     body.push(`> <i>${context.body}</i>`);
+    body.push(`<i>from : ${getHostAddr(link)}</i>`);
 
     spinner = ora().start('write reply');
     let parentPermlink = `${account}-${today}`;
