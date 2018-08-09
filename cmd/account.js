@@ -161,7 +161,10 @@ function analysis(data){
 				{val : profile_name, en : 'name', kr : '닉네임'},
 				{val : profile_about, en : 'about', kr : '정보'},
 				{val : profile_location, en : 'location', kr : '사는곳'},
-				{val : dateFormat(new Date(data.acc.created), 'yyyy-mm-dd HH:MM:ss'), en : 'created', kr : '계정생성일'},				
+				{val : dateFormat(new Date(data.acc.created), 'yyyy-mm-dd HH:MM:ss'), en : 'created', kr : '계정생성일'},
+				{val : data.followers.following_count, en : 'following_count', kr : '팔로잉'},
+				{val : data.followers.followers_count, en : 'followers_count', kr : '팔로워'},
+				{val : Math.round(data.followers.followers_mvest), en : 'mvest', kr : '팔로워 스파합'},
 			]
 		},
 		{
