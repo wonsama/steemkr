@@ -57,81 +57,37 @@ async function loadingDatas(account){
 	
 	let err;
 
-	// 계정정보 
-	let acc;
-  spinner = ora().start('loading account 1/6');
-  [err, acc] = await to(steem.api.getAccountsAsync([account]));
-  if(!err){
-  	if(acc.length!=1){
-  		err = `account [ ${account} ] is not exist.`;
-  	}else{
-  		acc = acc[0];
-  		spinner.succeed();	
-  	}
-  }
+  const FOLLOW_API_URL = `https://steemdb.com/api/accounts?account=${account}`;
+  let loads = [
+  	steem.api.getAccountsAsync([account]),
+  	steem.api.getCurrentMedianHistoryPriceAsync(),
+  	steem.api.getDynamicGlobalPropertiesAsync(),
+  	steem.api.getRewardFundAsync('post'),
+  	axios.get(FOLLOW_API_URL, AXIOS_CONFIG),
+  	steem.api.getVestingDelegationsAsync(account, null, 1000)
+  ];
 
-  // 가격정보
-  let price;
-  if(!err){
-  	spinner = ora().start('loading price 2/6');
-	  [err, price] = await to(steem.api.getCurrentMedianHistoryPriceAsync());  
-	  if(!err){
-	  	spinner.succeed();
-	  }	
-  }
+  let results;
+  spinner = ora().start('loading data');
+  [err, results] = await to(Promise.all(loads));
 
-  // 전역 설정정보 
-  let global;
-  if(!err){
-  	spinner = ora().start('loading global 3/6');
-	  [err, global] = await to(steem.api.getDynamicGlobalPropertiesAsync());  
-	  if(!err){
-	  	spinner.succeed();
-	  }	
-  }
-
-  // 포스팅 풀 펀딩 정보 
-  let fund;
-  if(!err){
-  	spinner = ora().start('loading reward fund 4/6');
-	  [err, fund] = await to(steem.api.getRewardFundAsync('post'));  
-	  if(!err){
-	  	spinner.succeed();
-	  }
-  }
-
-  // 계정정보 - 좀 더 상세함. getAccountsAsync와 겹칠 수도 있지만 나중에 없어질 수도 있기 때문에 일단 놔둠
-  // 그리고 스냅샷 시간이 있어서 최신 정보라 하기에는 쫌 무리가 있음
-  let followers;
-  if(!err){
-  	const FOLLOW_API_URL = `https://steemdb.com/api/accounts?account=${account}`;
-  	spinner = ora().start('loading followers mvest 5/6');
-	  [err, followers] = await to(axios.get(FOLLOW_API_URL, AXIOS_CONFIG));
-	  if(!err){
-	  	followers = followers.data[0];
-	  	spinner.succeed();
-	  }
-  }
-
-  let delegatees;
-  if(!err){
-  	spinner = ora().start('loading delegatees 6/6');
-	  [err, delegatees] = await to(steem.api.getVestingDelegationsAsync(account, null, 1000));
-	  if(!err){
-	  	spinner.succeed();
-	  }
-  }
-
+  // 값 분석
+  if(results[0].length!=1){
+		err = `account [ ${account} ] is not exist.`;
+	}
+  
 	// 작업 성공 
   if(!err){
+  	spinner.succeed();
+
     return Promise.resolve({
     	account:account,
-    	global:global,
-    	fund:fund,
-    	price:price,
-    	acc:acc,
-    	followers:followers,
-    	delegatees:delegatees,
+    	acc:results[0][0],
+    	price:results[1],
+    	global:results[2],
+    	fund:results[3],
+    	followers:results[4].data[0],
+    	delegatees:results[5],
     });
   }
 
@@ -187,13 +143,6 @@ function analysis(data){
 	let getVoteRate = (vw)=>parseInt(((vp * vw / 1e4)+ 49)/50)*100;
 	let voteValue = (vw) => vesting_shares / (total_vesting_fund_steem / total_vesting_shares) * getVoteRate(vw) * (rewardBalance / recentClaims) * steemPrice;
 
-
-	// console.log('===== 임대 (delegatee) =====\n');
-	//   for(let de of data.delegatees){
-	//   	let de_date = dateFormat(getLocalTime(de.min_delegation_time),'yyyy-mm-dd HH:MM:ss');
-	//   	let de_sp = steem.formatter.vestToSteem(getMoney(de.vesting_shares), total_vesting_shares, total_vesting_fund_steem).toFixed(0);
-	//   	console.log(`임대해준 아이디 : ${de.delegatee.padStart(16)}, 날짜 : ${de_date}, 스파 : ${de_sp} SP`);
-	//   }
 	let delegateeValues = [];
 	for(let de of data.delegatees){
 		let de_date = dateFormat(getLocalTime(de.min_delegation_time),'yyyy-mm-dd HH:MM:ss');
@@ -301,12 +250,12 @@ async function processAsyc(account, wif){
 
 	// 데이터 로딩
 	let data;
-	if(!err){
-	  [err, data] = await to(loadingDatas(account));
+	
+  [err, data] = await to(loadingDatas(account));
 
-	  // 값 분석
-	  let groups = analysis(data);
-	  
+  // 값 분석
+	if(!err){  
+  let groups = analysis(data);
 	  // 화면 출력
 	  console.log();
 	  for(let g of groups){
