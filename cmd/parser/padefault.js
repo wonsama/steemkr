@@ -33,8 +33,6 @@ module.exports = ($, _url, tags, bodyCut, uniqueCut)=>{
   let image = $(`meta[property='og:image']`).attr('content'); // open graph
   let url = $(`meta[property='og:url']`).attr('content'); // open graph
 
-  // console.log('title', title);
-
   if(!title&&!body&&!image&&!url){
     // steemit 은 property 가 아니라 name 으로 되어 있음 -_-;
     title = $(`meta[name='og:title']`).attr('content'); // open graph
@@ -46,6 +44,26 @@ module.exports = ($, _url, tags, bodyCut, uniqueCut)=>{
   // 주소 정보가 없는 경우 입력받은 주소로 대체
   url = url?url:_url;
   let unique = getUrlValues(url, true).substr(0,uniqueCut);
+
+  if(!title&&!body&&!image){
+    if(!title){
+      title = removeSpace2($("title").text());
+    }
+    if(!body){
+      body = removeSpace2($(".container").text()).substr(0,bodyCut);
+    }
+    if(body==""){
+      body = removeSpace2($("body").text()).substr(0,bodyCut);
+    }
+    if(!image){
+      let src = $("img").attr("src");
+      if(src.indexOf('http')>=0){
+        image = `${$("img").attr("src")}`;
+      }else{
+        image = `https://${getHostAddr(url)}${$("img").attr("src")}`;
+      }
+    }
+  }
 
   tags = removeSpace2(tags).split(',');		// string => array
   tags.push(getHostAddr(url).replace(/\./gi,'-'));
