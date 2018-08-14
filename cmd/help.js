@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    votedesc / vd  ........... 보팅상세정보 - 입력받은 URL의 보팅 정보를 보여준다
     scrappost / sp  .......... 스크랩 포스팅 - 입력받은 URL 글을 스크래핑(일부) 후 포스팅
     votegroup / vg  .......... 보팅 트레인(한번에 부캐 계정모두 보팅하기)
     create / cr  ............. 부계정 생성하기
@@ -29,8 +30,20 @@ const menus = {
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
   `,
 
+  votedesc: `
+    $ steemkr votedesc <URL> <SBD_LIMIT>
+
+      * 입력받은 <URL> 정보기준 보팅 정보를 출력한다 
+      * <SBD_LIMIT> 기준으로 해당 금액 이하는 표시하지 않음
+      * <SBD_LIMIT> 은 기본값이 0.001 이며 , 0으로 설정 시 모든 보팅 정보를 보여준다
+      * 보팅 금액(rshare) 기준으로 정렬되어 표시됨
+
+    $ steemkr votedesc 주소 SBD제한선(기본 0.001)
+    $ steemkr vd 주소 SBD제한선(기본 0.001)
+  `,
+
   scrappost: `
-    $ steemkr scrappost '<URL>' <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>
+    $ steemkr scrappost <URL> <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>
 
       * [유의사항] 주소란에 &가 포함되면 콘솔에서는 백그라운드로 동작함(이럴땐 주소를 ''로 감싸주면 됨)
       * 입력받은 <URL> 정보를 <STEEM_SCRAP_AUTHOR> 계정의 댓글로 기록한다 

@@ -1,4 +1,71 @@
+const steem = require('steem');
+const {getInfoFromLink, to} = require('./wutil');
+
 let fn = {};
+
+/*
+* 입력받은 주소의 보팅 금액 정보를 추출한다
+* @param link 주소정보
+* @param sbdOver 보상 예정 금액 하한선
+* @return 보팅금액 목록정보
+*/
+fn.getVotes = async (link, sbdOver=0.01) =>{
+  let err;
+
+  let info = getInfoFromLink(link);
+  if(!info.ok){
+    err = info.msg;
+  }
+
+  let author = info.data.author;
+  let permlink = info.data.permlink;
+
+  let cont;
+  [err, cont] = await to(steem.api.getContentAsync(author, permlink));
+
+  let out = [];
+
+  let vote_rshares = 0;
+  let vc = 0;
+  for(let av of cont.active_votes){
+    vote_rshares += Number(av.rshares);
+    vc++;
+  }
+
+  let pp = fn.getMoney(cont.pending_payout_value);  // 지급대기 금액
+  let tp = fn.getMoney(cont.total_payout_value);    // 저자 지급금액 
+  let cp = fn.getMoney(cont.curator_payout_value);  // 큐레이터 지급금액
+  let sp = tp + cp;
+
+  let payout = pp!=0?pp:sp;
+
+  for(let av of cont.active_votes){
+    let sbd = (payout * (av.rshares / vote_rshares));
+    let percent = `${av.percent / 100} %`;
+    if(sbd>=sbdOver){
+      out.push({
+        id : av.voter,
+        sbd : `${sbd.toFixed(3)} SBD`,
+        percent : `${av.percent / 100} %`,
+        time : new Date(av.time).getTime(),
+        _sbd : sbd
+      });
+    }
+  }
+  out.sort((a,b)=>b._sbd-a._sbd);
+
+  if(!err){
+    return Promise.resolve({
+      pp : pp,
+      tp : tp,
+      cp : cp,
+      sp : sp,
+      vc : vc,
+      out:out
+    });
+  }
+  return Promise.reject(err);  
+}
 
 /**
 * 스팀, 스달에서 값 정보만 추출

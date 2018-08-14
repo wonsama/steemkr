@@ -2,6 +2,9 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_votedesc.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_votedesc.png)
+<center>[ 그림 : 보팅정보 ]</center>
+
 ![ss_votegroup.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_votegroup.png)
 <center>[ 그림 : 보팅그룹 ]</center>
 
@@ -69,13 +72,14 @@
 
 #### 신규
 
+* 보팅정보(vd) : `$ steemkr votedesc <URL> <SBD:option>
+
+#### 기존
+
 * 스크랩(sp) : `$ steemkr scrappost <URL> <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>`
 * 보팅그룹(vg) : `$ steemkr votegroup <URL> <VOTE_WEIGHT> <STEEM_AUTHOR> <STEEM_KEY_POSTING> <STEEM_VOTES_LIST>`
 > STEEM_VOTES_LIST 에 해당하는 목록은 모두 POSTING 권한을 위임 받아야 됨에 유의
 > 참조링크 : https://steemit.com/kr/@wonsama/5vgvgt-kr-dev
-
-#### 기존
-
 * 계정생성(cr) : `$ steemkr create <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>`
 * 수정이력조회(hi) : `$ steemkr history <URL>`
 * 보팅조회(vo) : `$ steemkr voteto <STEEM_AUTHOR> <STEEM_VOTE_DAY-옵션,기본7일>`
@@ -107,12 +111,13 @@
 
 #### 신규
 
-* STEEM_SCRAP_AUTHOR 스크랩용 계정명 
-* STEEM_SCRAP_KEY_POSTING 스크랩용 계정명 포스팅키
-* STEEM_VOTES_LIST 보팅 그룹목록(포스팅키 위임이 된 계정들)이 자동적으로 입력됩니다.(콤마 구분)
+* N/A
 
 #### 기존
 
+* STEEM_SCRAP_AUTHOR 스크랩용 계정명 
+* STEEM_SCRAP_KEY_POSTING 스크랩용 계정명 포스팅키
+* STEEM_VOTES_LIST 보팅 그룹목록(포스팅키 위임이 된 계정들)이 자동적으로 입력됩니다.(콤마 구분)
 * STEEM_VOTE_DAY 값을 설정하는 경우 보팅조회(voteto) 기본 조회일자가 자동으로 입력됩니다.
 * STEEM_RESTEEM_AUTHOR 리스팀 작가(유저명) 정보가 자동으로 입력됩니다.
 * STEEM_RESTEEM_KEY_POSTING 값을 설정하는 경우 리스팀 작가(유저) 포스팅 키값이 자동으로 입력됩니다.
@@ -139,9 +144,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.12.0
+#### 0.13.0
 
-* scrappost : 링크주소 기반 포스팅, 스크랩을 손쉽게 하기위함.(부캐 개정에 설정하길 권장)
+* votedesc : 입력받은 링크 정보를 기준으로 보팅 정보를 확인할 수 있도록 함.
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵

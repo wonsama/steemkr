@@ -44,6 +44,7 @@ module.exports = ($, _url, tags, bodyCut, uniqueCut)=>{
   // 주소 정보가 없는 경우 입력받은 주소로 대체
   url = url?url:_url;
   let unique = getUrlValues(url, true).substr(0,uniqueCut);
+  unique = unique.replace(/\_/gi, '-'); // permlink에는 _이 포함되면 안됨에 유의
 
   if(!title&&!body&&!image){
     if(!title){
@@ -63,6 +64,10 @@ module.exports = ($, _url, tags, bodyCut, uniqueCut)=>{
         image = `https://${getHostAddr(url)}${$("img").attr("src")}`;
       }
     }
+  }
+
+  if(!image){
+    image = 'https://cdn.steemitimages.com/DQmY9PtNRziVn5UQWXCnNTKHyehntLfz4Cdd6PWHz6e8u1W/no-image-available.png';
   }
 
   tags = removeSpace2(tags).split(',');		// string => array

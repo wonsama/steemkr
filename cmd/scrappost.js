@@ -128,6 +128,8 @@ async function processAsyc(link, account, wif){
       $ = cheerio.load(linkInfo.data);
       spinner.succeed();
       context = parser($, link, DEFAULT_TAG, DEFAULT_BODY_LEN, DEFAULT_UNIQUE_LEN);
+
+      console.log('context', context);
     }
   }
 
@@ -170,6 +172,7 @@ async function processAsyc(link, account, wif){
     spinner = ora().start('check content is exist');
     let permlink = `${account}-${today}`;
     permlink = permlink.replace(/\./gi, '-'); // permlink에는 .이 포함되면 안됨에 유의
+    permlink = permlink.replace(/\_/gi, '-'); // permlink에는 _이 포함되면 안됨에 유의
     context.parentLink = `https://steemit.com/${DEFAULT_TAG}/@${account}/${permlink}`;
     [err, cont] = await to(steem.api.getContentAsync(account, permlink));
     if(!err){
@@ -198,6 +201,7 @@ async function processAsyc(link, account, wif){
     let body = `### ${today} 기준 스크랩 된 목록을 공유합니다.\n\n자세한 내용은 댓글을 참조 바랍니다.`;
     let permlink = `${account}-${today}`;
     permlink = permlink.replace(/\./gi, '-'); // permlink에는 .이 포함되면 안됨에 유의
+    permlink = permlink.replace(/\_/gi, '-'); // permlink에는 _이 포함되면 안됨에 유의
 
     // 설정 값에 STEEM_AUTHOR 가 존재하면 해당 계정으로 베니피셔리(수익자)를 설정한다. 수익은 스팀파워로 수령하게 됨
     if(STEEM_AUTHOR){
