@@ -129,7 +129,7 @@ async function processAsyc(link, account, wif){
       spinner.succeed();
       context = parser($, link, DEFAULT_TAG, DEFAULT_BODY_LEN, DEFAULT_UNIQUE_LEN);
 
-      console.log('context', context);
+      // console.log('context', context);
     }
   }
 

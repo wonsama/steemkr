@@ -24,6 +24,10 @@ module.exports = () => {
 	// return;
 
 	switch(cmd){
+		case 'rp':
+		case 'replies':
+			require('./cmd/replies')(params);
+		break;
 		case 'vd':
 		case 'votedesc':
 			require('./cmd/votedesc')(params);
@@ -91,10 +95,6 @@ module.exports = () => {
 		case 'hp':
 		case 'help':
 			require('./cmd/help')(param);
-		break;
-		case 'cf':
-		case 'config':
-			require('./cmd/config')(params);				
 		break;
 		case 'pr':
 		case 'price':

@@ -165,6 +165,7 @@ function analysis(data){
 				{val : data.followers.following_count, en : 'following_count', kr : '팔로잉'},
 				{val : data.followers.followers_count, en : 'followers_count', kr : '팔로워'},
 				{val : Math.round(data.followers.followers_mvest), en : 'mvest', kr : '팔로워 스파합'},
+				{info : '\n(팔로잉/팔로워/스파합 정보는 스냅샷 기준으로 제공되어 실시간 정보와 다를 수 있습니다.)'},
 			]
 		},
 		{
@@ -264,7 +265,11 @@ async function processAsyc(account, wif){
 	  for(let g of groups){
 			console.log(`===== ${g.kr} (${g.en}) =====\n`);
 			for(let v of g.values){
-				console.log(`${v.kr}(${v.en}) : ${v.val?v.val:(v.subfix?0:'N/A')} ${v.subfix?v.subfix:''}`);
+				if(v.info){
+					console.log(`${v.info}`);
+				}else{
+					console.log(`${v.kr}(${v.en}) : ${v.val?v.val:(v.subfix?0:'N/A')} ${v.subfix?v.subfix:''}`);	
+				}				
 			}
 			console.log(``);
 		}

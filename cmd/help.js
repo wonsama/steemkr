@@ -19,7 +19,7 @@ const menus = {
     block / bl  .............. 입력받은 계정을 차단한 계정목록을 볼 수 있다.
     feed / fd ................ 입력받은 계정의 실시간 피드정보를 확인할 수 있다. 10초 단위 목록 정보 갱신
     slb / sl ................. 입력받은 계정 및 기간 기준 스팀잇 라이프 벨런스를 보여준다.(글 작성 시간대)
-    accounts / ac ............ 입력받은 계정의 정보를 보여줌
+    accounts / ac ............ 입력받은 계정의 정보를 보여줌, posting키 설정 시 보상요청도가능
     price / pr ............... 오늘의 스팀 가격정보를 알려준다. (upbit 기준)
 
     (기타)
@@ -28,6 +28,16 @@ const menus = {
     
     $ steemkr help accounts ..... 계정관련 도움말을 볼 수 있습니다.
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
+  `,
+
+  replies: `
+    $ steemkr replies <URL> <AUTHOR:option>
+
+      * 입력받은 <URL> 정보기준 댓글 정보를 출력한다 
+      * <AUTHOR> 정보 입력시 해당 유저의 댓글만 출력한다 (아이디 일부만 넣어도 됨)
+
+    $ steemkr replies 주소 필터링아이디(옵션)
+    $ steemkr rp 주소 필터링아이디(옵션)
   `,
 
   votedesc: `

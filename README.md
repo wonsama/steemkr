@@ -2,6 +2,9 @@
 
 ## 스팀잇 용 CLI (커맨드라인 툴)
 
+![ss_replies.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_replies.png)
+<center>[ 그림 : 댓글정보 ]</center>
+
 ![ss_votedesc.png](https://raw.githubusercontent.com/wonsama/steemkr/master/images/ss_votedesc.png)
 <center>[ 그림 : 보팅정보 ]</center>
 
@@ -72,10 +75,11 @@
 
 #### 신규
 
-* 보팅정보(vd) : `$ steemkr votedesc <URL> <SBD:option>
+* 댓글정보(rp) : `$ steemkr replies <URL> <AUTHOR:option>`
 
 #### 기존
 
+* 보팅정보(vd) : `$ steemkr votedesc <URL> <SBD:option>`
 * 스크랩(sp) : `$ steemkr scrappost <URL> <STEEM_SCRAP_AUTHOR> <STEEM_SCRAP_KEY_POSTING>`
 * 보팅그룹(vg) : `$ steemkr votegroup <URL> <VOTE_WEIGHT> <STEEM_AUTHOR> <STEEM_KEY_POSTING> <STEEM_VOTES_LIST>`
 > STEEM_VOTES_LIST 에 해당하는 목록은 모두 POSTING 권한을 위임 받아야 됨에 유의
@@ -144,9 +148,9 @@
 
 # 최근 업데이트 이력
 
-#### 0.13.0
+#### 0.14.0
 
-* votedesc : 입력받은 링크 정보를 기준으로 보팅 정보를 확인할 수 있도록 함.
+* replies : 댓글 목록 정보를 가져온다. (아이디기준 필터링 가능
 * [변경이력 자세히 보기](https://raw.githubusercontent.com/wonsama/steemkr/master/HISTORY.md)
 
 # 개발 로드맵
