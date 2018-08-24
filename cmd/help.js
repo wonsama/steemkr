@@ -30,6 +30,15 @@ const menus = {
     $ steemkr hp accounts ....... (줄임 명령어 사용) 계정관련 도움말을 볼 수 있습니다.
   `,
 
+  powerup: `
+    $ steemkr powerup <STEEM_AUTHOR> <STEEM_KEY_ACTIVE>
+
+      * 계정의 스팀 파워업을 수행 합니다.
+
+    $ steemkr powerup 계정명 엑티브키
+    $ steemkr pw 계정명 엑티브키
+  `,
+
   replies: `
     $ steemkr replies <URL> <AUTHOR:option>
 
