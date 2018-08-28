@@ -25,6 +25,7 @@ const AXIOS_CONFIG = {
 * 파라미터 정보를 초기화 해준다
 * @param args 외부로부터 입력받은 파라미터 
 */
+let isAutoAuthor = false;
 function initParams(args)
 {
 	// 초기화
@@ -34,6 +35,7 @@ function initParams(args)
 	if(args.length==0){
 		if(STEEM_AUTHOR){
 			args.push(STEEM_AUTHOR);
+			isAutoAuthor = true;
 		}
 	}
 
@@ -216,7 +218,15 @@ function analysis(data){
 * @param wif 포스팅키
 */
 async function claimReward(data, account, wif){
-	if(STEEM_AUTHOR==account && wif){
+
+	let isClaim = true;
+	if(STEEM_AUTHOR && STEEM_KEY_POSTING){
+		if(STEEM_AUTHOR!=account){
+			isClaim=false;
+		}
+	}
+
+	if(isClaim && account && wif){
 		let reward_steem_balance = data.acc.reward_steem_balance;
     let reward_sbd_balance = data.acc.reward_sbd_balance;
     let reward_vesting_balance = data.acc.reward_vesting_balance;

@@ -1,3 +1,21 @@
+#### 0.14.2
+
+* account : 보상청구 로직 수정
+
+> 설정값(STEEM_AUTHOR,STEEM_KEY_POSTING)이 존재하는 경우에는 입력받은 작가와 계정이 동일한 경우에만 동작하도록 함, 반대로 설정 값이 없으면 계정과 포스팅키를 입력받으면 보상을 청구하도록 함
+
+```
+let isClaim = true;
+  if(STEEM_AUTHOR && STEEM_KEY_POSTING){
+    if(STEEM_AUTHOR!=account){
+      isClaim=false;
+    }
+  }
+
+  if(isClaim && account && wif){
+    // DO CLAIM REWARD
+  }
+```
 #### 0.14.1
 
 * powerup : 메뉴얼 안나오던 문제 수정 ( 제보 : @dakeshi 님 ) 
