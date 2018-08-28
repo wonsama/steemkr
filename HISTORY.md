@@ -1,3 +1,7 @@
+#### 0.14.3
+
+* account : https://steemdb.com/ 사이트가 다운되는 경우가 예외처리 추가됨
+
 #### 0.14.2
 
 * account : 보상청구 로직 수정
@@ -16,6 +20,7 @@ let isClaim = true;
     // DO CLAIM REWARD
   }
 ```
+
 #### 0.14.1
 
 * powerup : 메뉴얼 안나오던 문제 수정 ( 제보 : @dakeshi 님 ) 

@@ -67,7 +67,6 @@ const menus = {
       * [유의사항] 주소란에 &가 포함되면 콘솔에서는 백그라운드로 동작함(이럴땐 주소를 ''로 감싸주면 됨)
       * 입력받은 <URL> 정보를 <STEEM_SCRAP_AUTHOR> 계정의 댓글로 기록한다 
       * 1일 1POST가 되며, 하위 댓글로 연속적으로 기록됨
-      * 현재 가능 : zdnet, medium, lgcns blog ... (추후 지속적 추가 예정)
 
     $ steemkr scrappost 주소 계정명 포스팅키
     $ steemkr sp 주소 계정명 포스팅키

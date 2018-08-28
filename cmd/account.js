@@ -60,17 +60,35 @@ async function loadingDatas(account){
 	let err;
 
   const FOLLOW_API_URL = `https://steemdb.com/api/accounts?account=${account}`;
-  let loads = [
-  	steem.api.getAccountsAsync([account]),
-  	steem.api.getCurrentMedianHistoryPriceAsync(),
-  	steem.api.getDynamicGlobalPropertiesAsync(),
-  	steem.api.getRewardFundAsync('post'),
-  	axios.get(FOLLOW_API_URL, AXIOS_CONFIG),
-  	steem.api.getVestingDelegationsAsync(account, null, 1000)
-  ];
 
+
+  // steemd 사이트가 가끔 오류날 경우가 있기 때문
   let results;
   spinner = ora().start('loading data');
+  [err,results] = await to(axios.get(FOLLOW_API_URL, AXIOS_CONFIG));
+
+  let loads;
+
+  if(err){
+  	loads = [
+	  	steem.api.getAccountsAsync([account]),
+	  	steem.api.getCurrentMedianHistoryPriceAsync(),
+	  	steem.api.getDynamicGlobalPropertiesAsync(),
+	  	steem.api.getRewardFundAsync('post'),
+	  	steem.api.getVestingDelegationsAsync(account, null, 1000),
+	  ];	
+  }else{
+  	loads = [
+	  	steem.api.getAccountsAsync([account]),
+	  	steem.api.getCurrentMedianHistoryPriceAsync(),
+	  	steem.api.getDynamicGlobalPropertiesAsync(),
+	  	steem.api.getRewardFundAsync('post'),
+	  	steem.api.getVestingDelegationsAsync(account, null, 1000),
+	  	axios.get(FOLLOW_API_URL, AXIOS_CONFIG),
+	  ];	
+  }
+
+  // FOLLOW_API_URL : Bad Gateway 서버 다운으로 인해서 나올 수 있음에 유의해야 한다  
   [err, results] = await to(Promise.all(loads));
 
   // 값 분석
@@ -82,23 +100,36 @@ async function loadingDatas(account){
   if(!err){
   	spinner.succeed();
 
-    return Promise.resolve({
-    	account:account,
-    	acc:results[0][0],
-    	price:results[1],
-    	global:results[2],
-    	fund:results[3],
-    	followers:results[4].data[0],
-    	delegatees:results[5],
-    });
+  	if(results.length==6){
+  		return Promise.resolve({
+	    	account:account,
+	    	acc:results[0][0],
+	    	price:results[1],
+	    	global:results[2],
+	    	fund:results[3],
+	    	delegatees:results[4],
+	    	followers:results[5].data[0],
+	    });
+  	}else{
+  		// steemd 사이트 오류 
+  		return Promise.resolve({
+	    	account:account,
+	    	acc:results[0][0],
+	    	price:results[1],
+	    	global:results[2],
+	    	fund:results[3],
+	    	delegatees:results[4],
+	    });
+  	}
+    
   }
 
   // 오류 처리
   if(err){
-  	if(spinner.isSpinning){
+  	if(spinner&&spinner.isSpinning){
   		spinner.fail();	
   	}
-    return Promise.reject(err.toString());
+    return Promise.reject(err);
   }	
 }
 
@@ -152,8 +183,11 @@ function analysis(data){
 		delegateeValues.push({val:`아이디 : ${de.delegatee.padStart(16)}, 날짜 : ${de_date}, 스파 : ${de_sp} SP`, en:'info', kr:'정보'});
 	}
 
-	return [
-		{
+	let oprofile = {};
+
+	// 팔로워 정보가 오류나는 경우(steemd 사이트 오류) 처리
+	if(data.followers){
+		oprofile = {
 			en : 'profile',
 			kr : '프로필',
 			values : [
@@ -167,9 +201,28 @@ function analysis(data){
 				{val : data.followers.following_count, en : 'following_count', kr : '팔로잉'},
 				{val : data.followers.followers_count, en : 'followers_count', kr : '팔로워'},
 				{val : Math.round(data.followers.followers_mvest), en : 'mvest', kr : '팔로워 스파합'},
-				{info : '\n(팔로잉/팔로워/스파합 정보는 스냅샷 기준으로 제공되어 실시간 정보와 다를 수 있습니다.)'},
+				{info : `\n(팔로잉/팔로워/스파합 정보는 스냅샷 기준으로 제공되어 실시간 정보와 다를 수 있습니다.)`},
 			]
-		},
+		}
+	}else{
+		oprofile = {
+			en : 'profile',
+			kr : '프로필',
+			values : [
+				{val : data.acc.id, en : 'id', kr : '아이디'},
+				{val : data.acc.name, en : 'author', kr : '이름'},
+				{val : profile_image, en : 'image', kr : '프로필사진'},
+				{val : profile_name, en : 'name', kr : '닉네임'},
+				{val : profile_about, en : 'about', kr : '정보'},
+				{val : profile_location, en : 'location', kr : '사는곳'},
+				{val : dateFormat(new Date(data.acc.created), 'yyyy-mm-dd HH:MM:ss'), en : 'created', kr : '계정생성일'},
+				{val : `https://steemdb.com/api/accounts?account=${data.acc.name} 사이트에서 (followers_mvest) 를 확인하세요`, en : 'followers_mvest', kr : '스파합'},
+			]
+		}
+	}
+
+	return [
+		oprofile,
 		{
 			en : 'vote',
 			kr : '투표',
@@ -264,7 +317,6 @@ async function processAsyc(account, wif){
 
 	// 데이터 로딩
 	let data;
-	
   [err, data] = await to(loadingDatas(account));
 
   // 값 분석
@@ -298,7 +350,7 @@ async function processAsyc(account, wif){
 
   // 오류 처리
   if(err){
-  	if(spinner.isSpinning){
+  	if(spinner && spinner.isSpinning){
   		spinner.fail();	
   	}
     return Promise.reject(err.toString());
@@ -320,6 +372,7 @@ module.exports = (args)=>{
 	let account = args[0];
 	let wif = args[1];
 
+
 	processAsyc(account, wif)
 	.then(data=>{
 		console.log(`${data.acc.name} 의 계정 분석이 완료 되었습니다.`);
@@ -327,6 +380,7 @@ module.exports = (args)=>{
 	.catch(e=>{
 		console.log(`____________________________________________________________`);
 		console.error(e);
+		// console.log(e, e.stack);
 		console.log(`____________________________________________________________`);
 		console.error('오류가 발생 했습니다.위쪽 라인을 참조 바랍니다.');
 		console.log(`____________________________________________________________`);
