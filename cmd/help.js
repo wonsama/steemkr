@@ -3,6 +3,7 @@ const menus = {
     steemkr [command] <options>
 
     (메인)
+    replies / rp ............. 원문 글의 댓글 목록 정보를 보여준다
     votedesc / vd  ........... 보팅상세정보 - 입력받은 URL의 보팅 정보를 보여준다
     scrappost / sp  .......... 스크랩 포스팅 - 입력받은 URL 글을 스크래핑(일부) 후 포스팅
     votegroup / vg  .......... 보팅 트레인(한번에 부캐 계정모두 보팅하기)
