@@ -95,10 +95,13 @@ let fnIsStraight = (clone)=>{
 	});
 }
 
-let fnToString = (ori) =>{
+let fnToString = (ori, lastAt) =>{
 	let cards = [];
-	for(let item of ori){
-		cards.push(`${item.type} ${item.number}`);
+	if(!lastAt){
+		lastAt = ori.length; 
+	}
+	for(let i=ori.length-lastAt;i<ori.length;i++){
+		cards.push(`${ori[i].type} ${ori[i].number}`);
 	}
 	return cards.join(',');
 }
@@ -158,77 +161,56 @@ let fnMaxType = (clone) =>{
 	return max;
 }
 
-// fn.JOKBO = {
-// 	NO_PAIR : 0,
-// 	ONE_PAIR : 1,
-// 	TWO_PAIR : 2,
-// 	TRIPPLE : 3,
-// 	STRAIGHT : 4,
-// 	BACK_STRAIGHT : 5,
-// 	MOUNTAIN : 6,
-// 	FLUSH : 7,
-// 	FULL_HOUSE : 8,
-// 	FOUR_CARD : 9,
-// 	STRAIGHT_FLASH : 10,
-// 	BACK_STRAIGHT_FLASH : 11,
-// 	ROYAL_STRAIGHT_FLASH : 12,
-// }
-
-/*
-* 카드 족보가 동일한 경우 우선순위를 정해준다 
-*/
-// fn.sortFilterWhenSame = (a, b) =>{
-// 	let jb = c1.jokbo;
-
-// 	if([ROYAL_STRAIGHT_FLASH,BACK_STRAIGHT_FLASH].includes(jb)){
-// 		// 무늬기준
-// 		return b._type - a.type;
-// 	}
-
-// 	if([STRAIGHT_FLASH, FLUSH, MOUNTAIN, BACK_STRAIGHT].includes(jb)){
-// 		// 숫자 -> 무늬
-// 		if(a.maxNum==b.maxNum){
-// 			return b._type - a.type;
-// 		}else{
-// 			return b.maxNum - a.maxNum;
-// 		}
-// 	}
-
-// 	if([FOUR_CARD,FULL_HOUSE].includes(jb)){
-// 		// 그룹숫자, 무조건 달라야 됨 
-// 		let num = fnDiffGNum(a.groupNumbers, b.groupNumbers);
-// 		return num;
-// 	}
-
-// 	if([FOUR_CARD,FULL_HOUSE].includes(jb)){
-// 		// 숫자가 가장 높은, 무늬
-// 		return fnDiffGNum(a,b);
-// 	}
-// }
-
-fn.sortFilterWhenSame = (gn1, gn2)=>{
+fn.sortFilterWhenSame = (a, b)=>{
 	
+	// 족보가 동일한 항목에 대해 확인
+	let gn1 = a.groupNumbers;
+	let gn2 = b.groupNumbers;
+
 	// 예외상황
 	if(!gn1 || !gn2 || gn1.length!=gn2.length){
 		// 말도 안되는 경우임
 		throw Error(`is not same length ( ${gn1.length}, ${gn2.length} )`);
 	}
 
-	// 숫자로 정렬 
+	// 숫자 쌍으로 먼저 검증 
+	if([JOKBO.TWO_PAIR,JOKBO.FULL_HOUSE].includes(a.jokbo)){
+		for(let i=0;i<gn1.length;i++){
+			if(gn1[i].num!=gn2[i].num){
+				// 숫자
+				return gn2[i].num - gn1[i].num;
+			}
+		}
+	}
+
+	// 숫자 > 타입
+	// 카운트는 항시 동일
 	for(let i=0;i<gn1.length;i++){
 		if(gn1[i].num!=gn2[i].num){
-			return gn2[i].num - gn1[i].num;	
+			// 숫자
+			return gn2[i].num - gn1[i].num;
+		}else{
+			// 타입, 카드는 4장이 최고임, 4장 비교는 무의미
+			let t0 = gn2[i].types[0] - gn1[i].types[0];
+			if(t0!=0){
+				return t0;
+			}
+			if(gn1[i].length>1){
+				let t1 = gn2[i].types[1] - gn1[i].types[1];
+				if(t1!=0){
+					return t1;
+				}
+			}
+			if(gn1[i].length>2){
+				let t2 = gn2[i].types[2] - gn1[i].types[2];
+				if(t2!=0){
+					return t2;
+				}
+			}
 		}
 	}
 
-	// 무늬로 정렬
-	for(let i=0;i<gn1.length;i++){
-		if(gn1[i].types[0]!=gn2[i].types[0]){
-			return gn2[i].types[0] - gn1[i].types[0];	
-		}
-	}
-
-	// 완전 동일한 카드 목록임
+	// 완전 동일한 카드 목록임, idx가 낮은걸로 구분하자 -_-; 먼저 카드 뽑은 사람임
 	return 0;
 }
 
@@ -349,7 +331,9 @@ fn.jokboCards = (cards, name, idx) =>{
 		jokbo:jokbo,
 		jokboe:JOKBO_ENG[jokbo],
 		ori : cards,
+		valuec : fnToString(clone),
 		value : fnToString(cards),
+		value2 : fnToString(cards, 2),
 		name : name,
 		idx : idx,
 	};
@@ -386,7 +370,8 @@ fn.makeDeck = () =>{
       	type : CARD_T[i],
       	_type : i,
       	number : CARD_N[j],
-      	_number : j+2
+      	_number : j+2,
+      	value : `${CARD_T[i]} ${CARD_N[j]}`,
       });
     }
   }
