@@ -1,12 +1,9 @@
+const {init:arrInit} = require('./warray');
+
 let fn = {};
 
 // 프랑스식(한국) 스>다>하>클, 미국은 스>하>다>클
 // see : http://koreabettingnews.com/casino/%ED%8F%AC%EC%BB%A4-%EC%A1%B1%EB%B3%B4%EC%99%80-%EC%9A%A9%EC%96%B4-%EC%97%90-%EB%8C%80%ED%95%B4-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90/
-const CARD_T = ['♣️','♥️','♦️','♠️'];
-const CARD_N = [2,3,4,5,6,7,8,9,10,'J','Q','K','A'];
-const BLACKJACK = 21;
-const CARD_NUM_START = 2;
-const CARD_NUM_A = 14;
 
 /*
 * 카드 타입 정보
@@ -18,7 +15,53 @@ fn.CARD_TYPE = {
 	SPADE : 3
 };
 
-let isBackStraight = (clone)=>{
+/*
+* 카드 족보
+*/
+fn.JOKBO = {
+	NO_PAIR : 0,
+	ONE_PAIR : 1,
+	TWO_PAIR : 2,
+	TRIPPLE : 3,
+	STRAIGHT : 4,
+	BACK_STRAIGHT : 5,
+	MOUNTAIN : 6,
+	FLUSH : 7,
+	FULL_HOUSE : 8,
+	FOUR_CARD : 9,
+	STRAIGHT_FLASH : 10,
+	BACK_STRAIGHT_FLASH : 11,
+	ROYAL_STRAIGHT_FLASH : 12,
+}
+
+const CARD_TYPE = {... fn.CARD_TYPE};
+const JOKBO = {... fn.JOKBO};
+const JOKBO_ENG = [
+	'NO_PAIR',
+	'ONE_PAIR',
+	'TWO_PAIR',
+	'TRIPPLE',
+	'STRAIGHT',
+	'BACK_STRAIGHT',
+	'MOUNTAIN',
+	'FLUSH',
+	'FULL_HOUSE',
+	'FOUR_CARD',
+	'STRAIGHT_FLASH',
+	'BACK_STRAIGHT_FLASH',
+	'ROYAL_STRAIGHT_FLASH',
+];
+const CARD_T = ['♣️','♥️','♦️','♠️'];
+const CARD_N = [2,3,4,5,6,7,8,9,10,'J','Q','K','A'];
+const BLACKJACK = 21;
+const CARD_NUM_START = 2;
+const CARD_NUM_A = 14;
+
+let fnIsBackStraight = (clone)=>{
+
+	// 계산을 손쉽게 하기 위하여 복제카드는 정렬 한다(숫자기준으로)
+	fn.sortCards(clone, false);
+
 	for(let i=0;i<clone.length;i++){
 		if(i<4){
 			if(clone[i]._number != i+CARD_NUM_START){
@@ -33,11 +76,15 @@ let isBackStraight = (clone)=>{
 	return true;
 }
 
-let isStraight = (clone)=>{
-	
+let fnIsStraight = (clone)=>{	
+
+	// 계산을 손쉽게 하기 위하여 복제카드는 정렬 한다(숫자기준으로)
+	fn.sortCards(clone, false);
+
 	// 스트레이트 
 	return clone.every((el,idx,arr)=>{
 		if(idx>0){
+			// 숫자기준 정렬 후 작업이 이뤄져야 됨
 			if(el._number==arr[idx-1]._number+1){
 				return true;
 			}else{
@@ -48,20 +95,192 @@ let isStraight = (clone)=>{
 	});
 }
 
-let isFlush = (clone)=>{
-	return clone.every((el,idx,arr)=>{
-		if(idx>0){
-			if(el._type==arr[idx-1]._type){
-				return true;
-			}else{
-				return false;
-			}
-		}
-		return true;
-	});
+let fnToString = (ori) =>{
+	let cards = [];
+	for(let item of ori){
+		cards.push(`${item.type} ${item.number}`);
+	}
+	return cards.join(',');
 }
 
-fn.jokboCards = (cards) =>{
+let fnNumbers = (clone) =>{
+	let nums = arrInit(13, 0);
+	for(let c of clone){
+		let now = nums[c._number-2] + 1;
+		nums[c._number-2]=now;
+	}
+
+	let notempty = [];
+	for(let n of nums){
+		if(n!=0){
+			notempty.push(n);
+		}
+	}
+
+	return notempty;
+}
+
+let fnMaxSameNumber = (clone) =>{
+	let nums = arrInit(13, 0);
+	let max = 0;
+	for(let c of clone){
+		let now = nums[c._number-2] + 1;
+		nums[c._number-2]=now;
+		max = Math.max(now, max);
+	}
+	return max;
+}
+
+let fnMaxSameType = (clone) =>{
+	let types = arrInit(4, 0);
+	let max = 0;
+	for(let c of clone){
+		let now = types[c._type] + 1;
+		types[c._type]=now;
+		max = Math.max(now, max);
+	}
+	return max;
+}
+
+let fnMaxNum = (clone) =>{
+	let max = 0;
+	for(let c of clone){
+		max = Math.max(c._number, max);
+	}
+	return max;
+}
+
+let fnMaxType = (clone) =>{
+	let max = 0;
+	for(let c of clone){
+		max = Math.max(c._type, max);
+	}
+	return max;
+}
+
+// fn.JOKBO = {
+// 	NO_PAIR : 0,
+// 	ONE_PAIR : 1,
+// 	TWO_PAIR : 2,
+// 	TRIPPLE : 3,
+// 	STRAIGHT : 4,
+// 	BACK_STRAIGHT : 5,
+// 	MOUNTAIN : 6,
+// 	FLUSH : 7,
+// 	FULL_HOUSE : 8,
+// 	FOUR_CARD : 9,
+// 	STRAIGHT_FLASH : 10,
+// 	BACK_STRAIGHT_FLASH : 11,
+// 	ROYAL_STRAIGHT_FLASH : 12,
+// }
+
+/*
+* 카드 족보가 동일한 경우 우선순위를 정해준다 
+*/
+// fn.sortFilterWhenSame = (a, b) =>{
+// 	let jb = c1.jokbo;
+
+// 	if([ROYAL_STRAIGHT_FLASH,BACK_STRAIGHT_FLASH].includes(jb)){
+// 		// 무늬기준
+// 		return b._type - a.type;
+// 	}
+
+// 	if([STRAIGHT_FLASH, FLUSH, MOUNTAIN, BACK_STRAIGHT].includes(jb)){
+// 		// 숫자 -> 무늬
+// 		if(a.maxNum==b.maxNum){
+// 			return b._type - a.type;
+// 		}else{
+// 			return b.maxNum - a.maxNum;
+// 		}
+// 	}
+
+// 	if([FOUR_CARD,FULL_HOUSE].includes(jb)){
+// 		// 그룹숫자, 무조건 달라야 됨 
+// 		let num = fnDiffGNum(a.groupNumbers, b.groupNumbers);
+// 		return num;
+// 	}
+
+// 	if([FOUR_CARD,FULL_HOUSE].includes(jb)){
+// 		// 숫자가 가장 높은, 무늬
+// 		return fnDiffGNum(a,b);
+// 	}
+// }
+
+fn.sortFilterWhenSame = (gn1, gn2)=>{
+	
+	// 예외상황
+	if(!gn1 || !gn2 || gn1.length!=gn2.length){
+		// 말도 안되는 경우임
+		throw Error(`is not same length ( ${gn1.length}, ${gn2.length} )`);
+	}
+
+	// 숫자로 정렬 
+	for(let i=0;i<gn1.length;i++){
+		if(gn1[i].num!=gn2[i].num){
+			return gn2[i].num - gn1[i].num;	
+		}
+	}
+
+	// 무늬로 정렬
+	for(let i=0;i<gn1.length;i++){
+		if(gn1[i].types[0]!=gn2[i].types[0]){
+			return gn2[i].types[0] - gn1[i].types[0];	
+		}
+	}
+
+	// 완전 동일한 카드 목록임
+	return 0;
+}
+
+
+let fnGroupNumbers = (clone) =>{
+
+	let ocByNum = [];
+	let nums = arrInit(13, 0);
+
+	for(let c of clone){
+		nums[c._number-2] = nums[c._number-2] + 1;
+	}
+	
+	for(let i=0;i<nums.length;i++){
+		if(nums[i]!=0){
+			ocByNum.push({num:i+2, cnt:nums[i]});
+		}
+	}
+
+	// 나온횟수, 큰숫자 순서로 정렬
+	ocByNum.sort((a,b)=>{
+		if(b.cnt==a.cnt){
+			return b.num-a.num;
+		}else{
+			return b.cnt-a.cnt;
+		}
+	});
+
+	// 카드무늬 정보 추가
+	for(let oc of ocByNum){
+		oc.types = [];
+		for(let c of clone){
+			if(c._number==oc.num){
+				oc.types.push(c._type);
+			}
+		}
+		// 타입이 큰 숫자가 앞으로 오도록 처리
+		oc.types.sort((a,b)=>b-a);
+	}
+	
+	return ocByNum;
+}
+
+fn.jokboCards = (cards, name, idx) =>{
+
+	/*
+	[ '0', { type: '♣️', _type: 0, number: 10, _number: 10 } ]
+	[ '1', { type: '♦️', _type: 2, number: 10, _number: 10 } ]
+	[ '2', { type: '♥️', _type: 1, number: 'J', _number: 11 } ]
+	[ '3', { type: '♥️', _type: 1, number: 7, _number: 7 } ]
+	[ '4', { type: '♣️', _type: 0, number: 'Q', _number: 12 } ]
+	*/
 
 	// 로얄스트레이트 플러쉬 : 5장이 같은 무늬 10, J, Q, K, A 무늬는 상관없이 통일된 무늬만 있으면 된다. 숫자는 10,J,Q,K,A가 고정으로 있어여 한다.
 	// 백 스트레이트 플러쉬 : 5장이 같은 무늬 A,2,3,4,5 무늬는 상관없이 통일된 무늬만 있으면 된다. 숫자는 A,2,3,4,5 고정이어야 한다.
@@ -83,17 +302,61 @@ fn.jokboCards = (cards) =>{
 	// let clone = cards.slice(0);
 	let clone = JSON.parse( JSON.stringify( cards ) );
 
-	// 계산을 손쉽게 하기 위하여 복제카드는 정렬 한다(숫자기준으로)
-	fn.sortCards(clone, false);
+	let isFlush = fnMaxSameType(clone)==5;
+	let isBackStraight = fnIsBackStraight(clone);
+	let isStraight = fnIsStraight(clone);
 
-	let isBackStraight = isBackStraight(clone);
-	let isStraight = isStraight(clone);
-	let isFlush = isFlush(clone);
+	let maxSameNumber = fnMaxSameNumber(clone);
+	let maxSameType = fnMaxSameType(clone);
+	let maxNum = fnMaxNum(clone);
+	let maxType = fnMaxType(clone);
+	let groupNumbers = fnGroupNumbers(clone);
 
-	return {
+	let isMountain = isStraight && maxNum==14;
+	let isRoyalStraightFlash = isMountain && isFlush;
+	let isBackStraightFlash = isBackStraight && isFlush;
+	let isStraightFlash = isStraight && isFlush;
+
+	let numbers = fnNumbers(clone);
+
+	let isFourCard = numbers.includes(4);	// 4,1
+	let isTripple = numbers.includes(3);	// 3,2 or 3,1,1
+	let isFullHouse = isTripple && numbers.length==2;	// 3,2
+	let isTwoPair = numbers.length==3;	// 2,2,1
+	let isOnePair = numbers.length==4;		// 2,1,1,1
+	let isNoPair = !isStraight&&!isBackStraight&&numbers.length==5;		// 1,1,1,1,1
+
+	let jokbo = JOKBO.NO_PAIR;
+	jokbo = Math.max(isRoyalStraightFlash?JOKBO.ROYAL_STRAIGHT_FLASH:0,jokbo);
+	jokbo = Math.max(isBackStraightFlash?JOKBO.BACK_STRAIGHT_FLASH:0,jokbo);
+	jokbo = Math.max(isStraightFlash?JOKBO.STRAIGHT_FLASH:0,jokbo);
+	jokbo = Math.max(isFourCard?JOKBO.FOUR_CARD:0,jokbo);
+	jokbo = Math.max(isFullHouse?JOKBO.FULL_HOUSE:0,jokbo);
+	jokbo = Math.max(isFlush?JOKBO.FLUSH:0,jokbo);
+	jokbo = Math.max(isMountain?JOKBO.MOUNTAIN:0,jokbo);
+	jokbo = Math.max(isBackStraight?JOKBO.BACK_STRAIGHT:0,jokbo);
+	jokbo = Math.max(isStraight?JOKBO.STRAIGHT:0,jokbo);
+	jokbo = Math.max(isTripple?JOKBO.TRIPPLE:0,jokbo);
+	jokbo = Math.max(isTwoPair?JOKBO.TWO_PAIR:0,jokbo);
+	jokbo = Math.max(isOnePair?JOKBO.ONE_PAIR:0,jokbo);	
+
+	let output = {
+		maxSameNumber:maxSameNumber,
+		maxSameType:maxSameType,
+		maxNum:maxNum,
+		maxType:maxType,
+		groupNumbers:groupNumbers,
+		jokbo:jokbo,
+		jokboe:JOKBO_ENG[jokbo],
 		ori : cards,
-		sort : clone
+		value : fnToString(cards),
+		name : name,
+		idx : idx,
 	};
+
+	// 동률 비교하는 방법
+	// 카드 랭크, 동일카드 제거(홀덤이기 때문에) 후 => maxType, maxNum 비교
+	return output;
 }
 
 /*
