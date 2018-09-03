@@ -202,6 +202,10 @@ async function processAsyc(link, account, wif){
     let permlink = `${account}-${today}`;
     permlink = permlink.replace(/\./gi, '-'); // permlink에는 .이 포함되면 안됨에 유의
     permlink = permlink.replace(/\_/gi, '-'); // permlink에는 _이 포함되면 안됨에 유의
+    permlink = permlink.replace(/\+/gi, '-');
+    permlink = permlink.replace(/\#/gi, '-');
+    permlink = permlink.replace(/\=/gi, '-');
+    permlink = permlink.replace(/\&/gi, '-');
 
     // 설정 값에 STEEM_AUTHOR 가 존재하면 해당 계정으로 베니피셔리(수익자)를 설정한다. 수익은 스팀파워로 수령하게 됨
     if(STEEM_AUTHOR){
@@ -271,6 +275,12 @@ async function processAsyc(link, account, wif){
     // permlink에는 대문자가 포함되면 안됨에 유의
     let permlink = `${account}-${today}-${context.unique}`;
     permlink = permlink.replace(/\./gi, '-').toLowerCase();
+    permlink = permlink.replace(/\_/gi, '-').toLowerCase();
+    permlink = permlink.replace(/\+/gi, '-').toLowerCase();
+    permlink = permlink.replace(/\#/gi, '-').toLowerCase();
+    permlink = permlink.replace(/\=/gi, '-').toLowerCase();
+    permlink = permlink.replace(/\&/gi, '-').toLowerCase();
+
     [err, cont] = await to(steem.broadcast.commentAsync(wif, account, parentPermlink, account, permlink, '', body.join('\n\n'), JSON.stringify(jsonMetadata) ));
     if(!err){
       spinner.succeed();
