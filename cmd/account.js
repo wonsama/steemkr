@@ -11,7 +11,8 @@ const axios = require('axios');
 
 // 기본값
 const STEEM_AUTHOR = process.env.STEEM_AUTHOR;
-const STEEM_KEY_POSTING = process.env.STEEM_KEY_POSTING;
+let STEEM_KEY_POSTING = process.env.STEEM_KEY_POSTING;
+STEEM_KEY_POSTING = STEEM_KEY_POSTING?STEEM_KEY_POSTING:process.env[`ENV_AUTHOR_KEY_POSTING_${STEEM_AUTHOR}`];
 const AXIOS_CONFIG = {
   headers: {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',
